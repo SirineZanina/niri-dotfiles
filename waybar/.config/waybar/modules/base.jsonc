@@ -170,5 +170,18 @@
 "tray": {
 	"icon-size": 20,
 	"spacing": 4
+},
+
+"network": {
+	"interface": "wlo1",
+	"format-wifi": "󰤨 {essid}",
+	"format-ethernet": "󰈀 {ipaddr}",
+	"format-disconnected": "󰤭 ",
+	"format-linked": "󰈀 (no IP)",
+	"tooltip-format-wifi": "{essid} ({signalStrength}%) 󰤨\n{ipaddr}",
+	"tooltip-format-ethernet": "{ifname} 󰈀\n{ipaddr}",
+	"tooltip-format-disconnected": "Disconnected",
+	"max-length": 24,
+	"on-click": "nm-connection-editor"
 }
 }

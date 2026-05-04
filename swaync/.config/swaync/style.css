@@ -1,0 +1,165 @@
+* {
+  font-family: "JetBrainsMono Nerd Font Propo", monospace;
+  font-size: 14px;
+}
+
+.notification-row {
+  outline: none;
+}
+
+.notification-row:focus,
+.notification-row:hover {
+  opacity: 1;
+  background: #313244;
+}
+
+.notification {
+  border-radius: 12px;
+  margin: 6px 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+  padding: 0;
+}
+
+.notification-content {
+  background: #1e1e2e;
+  border: 1px solid #313244;
+  border-radius: 12px;
+  padding: 12px;
+  color: #cdd6f4;
+}
+
+.notification-default-action {
+  border-radius: 12px;
+  background: transparent;
+}
+
+.notification-default-action:hover {
+  background: #313244;
+}
+
+.close-button {
+  background: #f38ba8;
+  color: #1e1e2e;
+  border-radius: 100%;
+  border: none;
+  margin: 6px;
+  min-width: 24px;
+  min-height: 24px;
+}
+
+.close-button:hover {
+  background: #eba0ac;
+}
+
+.notification-action-button {
+  border-radius: 8px;
+  background: #313244;
+  color: #cdd6f4;
+  border: none;
+  margin: 4px;
+  padding: 4px 8px;
+}
+
+.notification-action-button:hover {
+  background: #45475a;
+}
+
+.urgency-low {
+  border-left: 3px solid #89b4fa;
+}
+
+.urgency-normal {
+  border-left: 3px solid #74c7ec;
+}
+
+.urgency-critical {
+  border-left: 3px solid #f38ba8;
+  animation: blink 1s infinite;
+}
+
+@keyframes blink {
+  50% { opacity: 0.6; }
+}
+
+.notification-group {
+  margin: 2px 12px;
+  border-radius: 12px;
+}
+
+/* Control center */
+.control-center {
+  background: #1e1e2e;
+  border: 1px solid #313244;
+  border-radius: 16px;
+  color: #cdd6f4;
+  padding: 8px;
+}
+
+.control-center-list {
+  background: transparent;
+}
+
+.control-center-list-placeholder {
+  opacity: 0.5;
+}
+
+.floating-notifications {
+  background: transparent;
+}
+
+/* Title widget */
+.widget-title {
+  color: #cdd6f4;
+  font-size: 16px;
+  font-weight: bold;
+  background: #181825;
+  border-radius: 12px;
+  padding: 8px 12px;
+  margin: 4px;
+}
+
+.widget-title > button {
+  background: #313244;
+  border: none;
+  border-radius: 8px;
+  color: #cdd6f4;
+  padding: 4px 10px;
+}
+
+.widget-title > button:hover {
+  background: #45475a;
+}
+
+/* DND toggle */
+.widget-dnd {
+  background: #181825;
+  border-radius: 12px;
+  padding: 8px 12px;
+  margin: 4px;
+  color: #cdd6f4;
+}
+
+.widget-dnd > switch {
+  border-radius: 12px;
+  background: #313244;
+  border: none;
+}
+
+.widget-dnd > switch:checked {
+  background: #74c7ec;
+}
+
+.widget-dnd > switch slider {
+  background: #cdd6f4;
+  border-radius: 100%;
+  border: none;
+  min-width: 18px;
+  min-height: 18px;
+}
+
+/* App icon */
+.notification-app-icon {
+  border-radius: 8px;
+  min-width: 48px;
+  min-height: 48px;
+}

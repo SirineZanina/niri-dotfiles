@@ -77,6 +77,7 @@ tooltip label {
 #disk,
 #idle_inhibitor,
 #memory,
+#network,
 #power-profiles-daemon,
 #pulseaudio,
 #taskbar,
@@ -104,8 +105,12 @@ tooltip label {
 }
 #pulseaudio,
 #backlight,
-#disk {
+#disk,
+#network {
   color: @on_surface;
+}
+#network.disconnected {
+  color: @error;
 }
 #tray,
 #window {

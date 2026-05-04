@@ -21,7 +21,8 @@
     "tray",
     "custom/separator#blank",
     "backlight",
-    "battery"
+    "battery",
+    "network"
   ],
   "modules-center": [
     "niri/workspaces"
