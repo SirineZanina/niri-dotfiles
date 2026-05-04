@@ -187,6 +187,7 @@ layout {
 spawn-at-startup "waybar"
 spawn-at-startup "mako"
 spawn-at-startup "swww-daemon"
+spawn-at-startup "sh" "-c" "swww img ~/Pictures/wallpapers/horizon.jpg"
 spawn-at-startup "/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1"
 spawn-at-startup "nm-applet" "--indicator"
 spawn-at-startup "blueman-applet"
