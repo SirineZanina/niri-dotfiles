@@ -123,8 +123,8 @@ layout {
 
     border {
         width 2
-        active-gradient from="#74c7ec" to="#89b4fa" angle=45
-        inactive-color "#313244"
+        active-color "#cdd6f4aa"
+        inactive-color "#59595980"
         urgent-color "#f38ba8"
 
         // Gradients can use a few different interpolation color spaces.
@@ -261,6 +261,7 @@ window-rule {
 window-rule {
     geometry-corner-radius 8
     clip-to-geometry true
+    opacity 1.0
 }
 
 window-rule {
@@ -283,9 +284,9 @@ layer-rule {
 }
 
 blur {
-    passes 2
-    offset 3.0
-    noise 0.03
+    passes 3
+    offset 5.0
+    noise 0.02
     saturation 1.0
 }
 
