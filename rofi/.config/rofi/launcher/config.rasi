@@ -1,0 +1,127 @@
+configuration {
+    modi:                "drun,run";
+    show-icons:          true;
+    icon-theme:          "Papirus";
+    display-drun:        "";
+    display-run:         "";
+    drun-display-format: "{name}";
+    steal-focus:         false;
+}
+
+@import ".config/rofi/shared/colors.rasi"
+@import ".config/rofi/shared/fonts.rasi"
+
+* {
+    bg:       @surface;
+    bg-alt:   @surface-container;
+    fg:       @on-surface;
+    accent:   @primary;
+    on-accent: @on-primary;
+
+    normal-background:           transparent;
+    normal-foreground:           @on-surface;
+    alternate-normal-background: transparent;
+    alternate-normal-foreground: @on-surface;
+    selected-normal-background:  @primary;
+    selected-normal-foreground:  @on-primary;
+    urgent-background:           transparent;
+    urgent-foreground:           @error;
+    selected-urgent-background:  @error;
+    selected-urgent-foreground:  @on-error;
+    active-background:           transparent;
+    active-foreground:           @secondary;
+    selected-active-background:  @secondary;
+    selected-active-foreground:  @on-secondary;
+    alternate-urgent-background: transparent;
+    alternate-urgent-foreground: @error;
+    alternate-active-background: transparent;
+    alternate-active-foreground: @secondary;
+}
+
+window {
+    transparency:     "real";
+    location:         center;
+    anchor:           center;
+    width:            560px;
+    border:           2px solid;
+    border-radius:    8px;
+    border-color:     @accent;
+    background-color: @bg;
+    cursor:           "default";
+}
+
+mainbox {
+    spacing:          10px;
+    padding:          16px;
+    background-color: transparent;
+    children:         [ "inputbar", "listview" ];
+}
+
+inputbar {
+    spacing:          8px;
+    padding:          10px 14px;
+    border-radius:    6px;
+    background-color: @bg-alt;
+    text-color:       @fg;
+    children:         [ "textbox-prompt-colon", "entry" ];
+}
+
+textbox-prompt-colon {
+    expand:           false;
+    str:              "";
+    text-color:       @accent;
+    background-color: transparent;
+}
+
+entry {
+    background-color:  transparent;
+    text-color:        @fg;
+    cursor:            text;
+    placeholder:       "Search apps…";
+    placeholder-color: @bg-alt;
+}
+
+listview {
+    columns:          1;
+    lines:            8;
+    cycle:            true;
+    dynamic:          true;
+    scrollbar:        false;
+    fixed-height:     true;
+    spacing:          4px;
+    background-color: transparent;
+    cursor:           "default";
+}
+
+element {
+    spacing:          10px;
+    padding:          8px 12px;
+    border-radius:    6px;
+    background-color: transparent;
+    text-color:       @fg;
+    cursor:           pointer;
+}
+
+element-icon {
+    size:             24px;
+    background-color: transparent;
+    cursor:           inherit;
+}
+
+element-text {
+    background-color: transparent;
+    text-color:       inherit;
+    vertical-align:   0.5;
+    horizontal-align: 0.0;
+    cursor:           inherit;
+}
+
+element normal.normal    { background-color: transparent; text-color: @fg;           }
+element normal.urgent    { background-color: transparent; text-color: @error;        }
+element normal.active    { background-color: transparent; text-color: @secondary;    }
+element alternate.normal { background-color: transparent; text-color: @fg;           }
+element alternate.urgent { background-color: transparent; text-color: @error;        }
+element alternate.active { background-color: transparent; text-color: @secondary;    }
+element selected.normal  { background-color: @accent;     text-color: @on-accent;    }
+element selected.urgent  { background-color: @error;      text-color: @on-error;     }
+element selected.active  { background-color: @secondary;  text-color: @on-secondary; }

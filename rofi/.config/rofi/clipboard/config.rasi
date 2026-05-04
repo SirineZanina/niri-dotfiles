@@ -1,0 +1,137 @@
+configuration {
+    modi:        "clipboard:~/.config/rofi/clipboard/cliphist-rofi";
+    show-icons:  true;
+    icon-theme:  "hicolor";
+}
+
+@import ".config/rofi/shared/colors.rasi"
+@import ".config/rofi/shared/fonts.rasi"
+
+* {
+    bg:        @surface;
+    bg-alt:    @surface-container;
+    fg:        @on-surface;
+    accent:    @primary;
+    on-accent: @on-primary;
+
+    normal-background:           transparent;
+    normal-foreground:           @on-surface;
+    alternate-normal-background: @surface-container;
+    alternate-normal-foreground: @on-surface;
+    selected-normal-background:  @primary;
+    selected-normal-foreground:  @on-primary;
+    urgent-background:           transparent;
+    urgent-foreground:           @error;
+    selected-urgent-background:  @error;
+    selected-urgent-foreground:  @on-error;
+    active-background:           transparent;
+    active-foreground:           @secondary;
+    selected-active-background:  @secondary;
+    selected-active-foreground:  @on-secondary;
+    alternate-urgent-background: transparent;
+    alternate-urgent-foreground: @error;
+    alternate-active-background: transparent;
+    alternate-active-foreground: @secondary;
+}
+
+window {
+    transparency:     "real";
+    location:         center;
+    anchor:           center;
+    width:            560px;
+    border:           2px solid;
+    border-radius:    8px;
+    border-color:     @accent;
+    background-color: @bg;
+    cursor:           "default";
+}
+
+mainbox {
+    spacing:          10px;
+    padding:          16px;
+    background-color: transparent;
+    children:         [ "inputbar", "message", "listview" ];
+}
+
+inputbar {
+    spacing:          8px;
+    padding:          10px 14px;
+    border-radius:    6px;
+    background-color: @bg-alt;
+    text-color:       @fg;
+    children:         [ "textbox-prompt-colon", "entry" ];
+}
+
+textbox-prompt-colon {
+    expand:           false;
+    str:              "";
+    text-color:       @accent;
+    background-color: transparent;
+}
+
+entry {
+    background-color:  transparent;
+    text-color:        @fg;
+    cursor:            text;
+    placeholder:       "Search clipboard…";
+    placeholder-color: @bg-alt;
+}
+
+message {
+    padding:          8px 14px;
+    border-radius:    6px;
+    background-color: @bg-alt;
+    text-color:       @fg;
+}
+
+textbox {
+    background-color: transparent;
+    text-color:       @fg;
+    vertical-align:   0.5;
+    horizontal-align: 0.0;
+    markup:           true;
+}
+
+listview {
+    columns:          1;
+    lines:            6;
+    cycle:            true;
+    dynamic:          true;
+    scrollbar:        false;
+    fixed-height:     true;
+    spacing:          4px;
+    background-color: transparent;
+    cursor:           "default";
+}
+
+/* taller rows so the icon has room to breathe */
+element {
+    padding:          6px 14px;
+    border-radius:    6px;
+    background-color: transparent;
+    text-color:       @fg;
+    cursor:           pointer;
+    orientation:      horizontal;
+    spacing:          10px;
+}
+
+element-icon {
+    size:             36px;
+    border-radius:    4px;
+    background-color: transparent;
+    cursor:           inherit;
+}
+
+element-text {
+    background-color: transparent;
+    text-color:       inherit;
+    vertical-align:   0.5;
+    horizontal-align: 0.0;
+    cursor:           inherit;
+}
+
+element normal.normal    { background-color: transparent; text-color: @fg;        }
+element alternate.normal { background-color: @bg-alt;    text-color: @fg;        }
+element selected.normal  { background-color: @accent;    text-color: @on-accent; }
+element normal.urgent    { background-color: transparent; text-color: @error;     }
+element selected.urgent  { background-color: @error;     text-color: @on-error;  }
