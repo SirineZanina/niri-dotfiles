@@ -1,4 +1,10 @@
 @import "./colors.css";
+
+window#waybar {
+  background-color: @background;
+  color: @on_surface;
+}
+
 * {
   font-family: "JetBrainsMono Nerd Font Propo";
   font-weight: bold;
