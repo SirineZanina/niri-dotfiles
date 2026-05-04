@@ -1,0 +1,124 @@
+#!/bin/sh
+# Shared environment variables for all POSIX shells
+# Sourced by ~/.config/zsh/.zprofile and ~/.bashrc
+# Follows XDG Base Directory Specification v0.8
+
+# ============================================================================
+# XDG BASE DIRECTORIES (Core specification)
+# ============================================================================
+export XDG_CONFIG_HOME="$HOME/.config"
+export XDG_DATA_HOME="$HOME/.local/share"
+export XDG_CACHE_HOME="$HOME/.cache"
+export XDG_STATE_HOME="$HOME/.local/state"
+
+# Zsh config directory
+export ZDOTDIR="$HOME/.config/zsh"
+
+# ============================================================================
+# DEFAULT APPLICATIONS
+# ============================================================================
+export EDITOR="nvim"
+export VISUAL="nvim"
+export TERMINAL="alacritty"
+export BROWSER="firefox"
+export PAGER="less"
+
+# ============================================================================
+# PATH CONFIGURATION
+# ============================================================================
+# User binaries
+export PATH="$HOME/.local/bin:$PATH"
+
+# Custom scripts
+export PATH="$XDG_CONFIG_HOME/scripts:$PATH"
+
+# Java
+export JAVA_HOME="/usr/lib/jvm/java-25-openjdk"
+export PATH="$JAVA_HOME/bin:$PATH"
+
+# Rust/Cargo
+export CARGO_HOME="$XDG_DATA_HOME/cargo"
+export RUSTUP_HOME="$XDG_DATA_HOME/rustup"
+export PATH="$CARGO_HOME/bin:$PATH"
+
+# Go
+export GOPATH="$XDG_DATA_HOME/go"
+export GOBIN="$GOPATH/bin"
+export GOMODCACHE="$XDG_CACHE_HOME/go/mod"
+export PATH="$GOBIN:$PATH"
+
+# Dotnet
+export DOTNET_ROOT="$HOME/.dotnet"
+export PATH="$HOME/.dotnet:$HOME/.dotnet/tools:$PATH"
+
+# Conda (if using miniconda)
+# export CONDA_ROOT="$HOME/miniconda3"
+# export PATH="$CONDA_ROOT/bin:$PATH"
+
+# BUN
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
+
+# ============================================================================
+# XDG COMPLIANT APPLICATION CONFIGS
+# ============================================================================
+# Shell history (use STATE not CACHE - it's persistent data)
+# Shell history - set per-shell to avoid cross-shell conflicts
+if [ -n "$ZSH_VERSION" ]; then
+    export HISTFILE="$XDG_STATE_HOME/zsh/history"
+elif [ -n "$BASH_VERSION" ]; then
+    export HISTFILE="$XDG_STATE_HOME/bash/history"
+fi
+
+export LESSHISTFILE="$XDG_STATE_HOME/less_history"     # Just a file
+export PYTHON_HISTORY="$XDG_STATE_HOME/python_history" # Just a file
+
+# Programming languages
+export PYTHONSTARTUP="$XDG_CONFIG_HOME/python/pythonrc"
+export NPM_CONFIG_USERCONFIG="$XDG_CONFIG_HOME/npm/npmrc"
+export NPM_CONFIG_CACHE="$XDG_CACHE_HOME/npm"
+export NODE_REPL_HISTORY="$XDG_STATE_HOME/node_repl_history"
+export GRADLE_USER_HOME="$XDG_DATA_HOME/gradle"
+
+# Conda
+# export CONDARC="$XDG_CONFIG_HOME/conda/condarc"
+
+# Zsh
+export ZSH_COMPDUMP="$XDG_CACHE_HOME/zsh/.zcompdump"
+
+# System utilities
+export WGETRC="$XDG_CONFIG_HOME/wget/wgetrc"
+export DOCKER_CONFIG="$XDG_CONFIG_HOME/docker"
+export GTK2_RC_FILES="$XDG_CONFIG_HOME/gtk-2.0/gtkrc-2.0"
+
+# Wine
+export WINEPREFIX="$XDG_DATA_HOME/wineprefixes/default"
+
+# Java options
+export JDK_JAVA_OPTIONS=-Djava.util.prefs.userRoot="$XDG_CONFIG_HOME/java"
+export _JAVA_AWT_WM_NONREPARENTING=1 # Fix for Java GUI apps in tiling WMs
+
+# ============================================================================
+# FZF CONFIGURATION
+# ============================================================================
+export FZF_DEFAULT_OPTS="--layout=reverse --height=40% --border --color=16"
+export FZF_CTRL_R_OPTS="--no-sort --exact --preview='echo {}' --preview-window=down:3:wrap"
+export FZF_ALT_C_OPTS="--preview='ls --color=always {}'"
+
+# ============================================================================
+# LESS/MAN PAGE COLORS
+# ============================================================================
+export MANPAGER="less -R --use-color -Dd+r -Du+b"
+export LESS="-R --use-color -Dd+r -Du+b"
+
+# Less termcap colors for man pages
+export LESS_TERMCAP_mb="$(printf '%b' '[1;31m')"     # Begin blinking
+export LESS_TERMCAP_md="$(printf '%b' '[1;36m')"     # Begin bold
+export LESS_TERMCAP_me="$(printf '%b' '[0m')"        # End mode
+export LESS_TERMCAP_so="$(printf '%b' '[01;44;33m')" # Begin standout
+export LESS_TERMCAP_se="$(printf '%b' '[0m')"        # End standout
+export LESS_TERMCAP_us="$(printf '%b' '[1;32m')"     # Begin underline
+export LESS_TERMCAP_ue="$(printf '%b' '[0m')"        # End underline
+
+export QT_QPA_PLATFORM=xcb
+

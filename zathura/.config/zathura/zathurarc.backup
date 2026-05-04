@@ -1,0 +1,103 @@
+# Conservative zathurarc configuration - minimal and stable
+# Place this file at ~/.config/zathura/zathurarc
+# Based on Arch Wiki recommendations
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# ESSENTIAL SETTINGS (from Arch Wiki)
+# ═══════════════════════════════════════════════════════════════════════════════
+
+# Enable copy to clipboard (Arch Wiki recommendation)
+set selection-clipboard clipboard
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# BASIC APPEARANCE (safe dark theme)
+# ═══════════════════════════════════════════════════════════════════════════════
+
+# Simple dark theme that works everywhere
+set default-bg "#2e2e2e"
+set default-fg "#dddddd"
+set statusbar-bg "#1c1c1c"
+set statusbar-fg "#ffffff"
+set inputbar-bg "#2e2e2e"
+set inputbar-fg "#dddddd"
+
+# Notification colors (keep simple)
+set notification-bg "#2e2e2e"
+set notification-fg "#dddddd"
+set notification-error-bg "#cc241d"
+set notification-error-fg "#ffffff"
+
+# Index colors
+set index-bg "#2e2e2e"
+set index-fg "#dddddd"
+set index-active-bg "#504945"
+set index-active-fg "#ffffff"
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# BASIC BEHAVIOR (conservative settings)
+# ═══════════════════════════════════════════════════════════════════════════════
+
+# Window settings
+set adjust-open "best-fit"
+set pages-per-row 1
+
+# Scrolling (safe defaults)
+set scroll-page-aware true
+set scroll-step 40
+set scroll-wrap false
+
+# Search settings
+set incremental-search true
+set search-hadjust true
+
+# Performance (conservative)
+set page-cache-size 15
+set render-loading true
+
+# Database (use default for compatibility)
+set database "sqlite"
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# MINIMAL KEY MAPPINGS (only essential ones)
+# ═══════════════════════════════════════════════════════════════════════════════
+
+# Basic navigation (standard vim keys)
+map j scroll down
+map k scroll up
+map h scroll left
+map l scroll right
+
+# Page navigation
+map <C-f> scroll full-down
+map <C-b> scroll full-up
+
+# Zoom (simple)
+map = zoom in
+map - zoom out
+map 0 zoom best-fit
+
+# Essential toggles
+map r rotate
+map <C-r> recolor
+map i toggle_index
+map <F11> toggle_fullscreen
+
+# Search
+map / focus_inputbar
+map n search forward
+map N search backward
+
+# Quit
+map q quit
+map <C-c> abort
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# RECOLOR SETTINGS (for dark mode reading)
+# ═══════════════════════════════════════════════════════════════════════════════
+
+# Simple recolor for dark reading
+set recolor-lightcolor "#2e2e2e"
+set recolor-darkcolor "#dddddd"
+set recolor-keephue false
+set recolor-reverse-video true
+

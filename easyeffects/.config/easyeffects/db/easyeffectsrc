@@ -1,0 +1,11 @@
+[StreamInputs]
+inputDevice=alsa_input.usb-HP__Inc_HyperX_Cloud_III_000000000000-00.mono-fallback
+
+[StreamOutputs]
+outputDevice=alsa_output.usb-HP__Inc_HyperX_Cloud_III_000000000000-00.analog-stereo
+
+[Window]
+height=1035
+visiblePage=pwPage
+visiblePipeWirePage=testSignalsPage
+width=950
