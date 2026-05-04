@@ -1,0 +1,11 @@
+{
+  "general": {
+    "fontDefault": "JetBrains Mono Nerd Font",
+    "fontFixed": "JetBrains Mono Nerd Font"
+  },
+  "colorSchemes": {
+    "predefinedScheme": "Catppuccin",
+    "darkMode": true,
+    "useWallpaperColors": false
+  }
+}
