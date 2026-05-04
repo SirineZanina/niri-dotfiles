@@ -1,0 +1,146 @@
+@import "./colors.css";
+* {
+  font-family: "JetBrainsMono Nerd Font Propo";
+  font-weight: bold;
+  min-height: 0;
+  /* set font-size to 100% if font scaling is set to 1.00 using nwg-look */
+  font-feature-settings: '"zero", "ss01", "ss02", "ss03", "ss04", "ss05", "cv31"';
+}
+
+tooltip {
+  background-color: #1e1e2e;
+  border-radius: 20px;
+}
+
+tooltip label {
+  color: @on_surface;
+}
+
+/*-----module groups----*/
+.modules-right,
+.modules-center,
+.modules-left {
+  color: @secondary;
+  border-radius: 20px;
+  padding: 2px 4px;
+}
+/*-----modules indv----*/
+#taskbar button,
+#workspaces button {
+  color: @outline;
+  box-shadow: none;
+  text-shadow: none;
+  padding: 0px;
+  padding-bottom: 0px;
+  padding-top: 1px;
+  border-radius: 9px;
+  padding-left: 4px;
+  padding-right: 4px;
+  animation: gradient_f 20s ease-in infinite;
+  transition: all 0.5s cubic-bezier(0.55, -0.68, 0.48, 1.682);
+}
+#taskbar button:hover,
+#workspaces button:hover {
+  color: @on_secondary_fixed_variant;
+  border-radius: 20px;
+  padding-left: 2px;
+  padding-right: 2px;
+  animation: gradient_f 20s ease-in infinite;
+  transition: all 0.3s cubic-bezier(0.55, -0.68, 0.48, 1.682);
+}
+#taskbar button.active,
+#workspaces button.active {
+  color: @primary;
+  padding-left: 8px;
+  padding-right: 8px;
+  animation: gradient_f 20s ease-in infinite;
+  transition: all 0.3s cubic-bezier(0.55, -0.68, 0.48, 1.682);
+}
+#workspaces button.urgent {
+  color: @on_secondary;
+  border-radius: 10px;
+}
+#workspaces button.persistent {
+  border-radius: 10px;
+}
+#backlight,
+#battery,
+#bluetooth,
+#clock,
+#cpu,
+#disk,
+#idle_inhibitor,
+#memory,
+#power-profiles-daemon,
+#pulseaudio,
+#taskbar,
+#temperature,
+#tray,
+#window,
+#workspaces,
+#custom-power,
+#custom-cpufreq {
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-right: 6px;
+  padding-left: 6px;
+}
+/* Module-specific colors */
+#clock {
+  color: @primary;
+}
+#battery,
+#cpu,
+#memory,
+#power-profiles-daemon,
+#custom-cpufreq {
+  color: @secondary;
+}
+#pulseaudio,
+#backlight,
+#disk {
+  color: @on_surface;
+}
+#tray,
+#window {
+  color: @on_surface;
+}
+#temperature {
+  color: @tertiary;
+}
+#custom-power {
+  color: @error;
+}
+#idle_inhibitor {
+  color: @outline;
+}
+/*-----Indicators----*/
+#idle_inhibitor.activated {
+  color: @primary;
+}
+/* Speaker mute - only when speakers are muted */
+#pulseaudio.muted {
+  color: @error;
+}
+
+/* Microphone mute - different selector */
+#pulseaudio.microphone.source-muted {
+  color: @error;
+}
+
+/* Make sure unmuted mic stays normal color */
+#pulseaudio.microphone {
+  color: @on_surface;
+}
+
+#temperature.critical {
+  color: @error;
+}
+@keyframes blink {
+  to {
+    color: @surface;
+  }
+}
+#battery.critical:not(.charging) {
+  color: @error;
+}

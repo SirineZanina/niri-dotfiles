@@ -1,0 +1,68 @@
+/* NOTE: This is only for Custom Modules */
+/* Custom Modules like weather browser, tty, file manager at the beginning */
+
+{
+
+"custom/power": {
+	"format": "⏻",
+        "on-click": "wlogout --protocol layer-shell",
+	"tooltip": true,
+	"tooltip-format":"Logout Menu"
+},
+
+"custom/swaync": {
+	"tooltip": true,
+	"tooltip-format": "Left Click: Launch Notification Center\nRight Click: Do not Disturb",
+	"format": "{} {icon} ",
+	"format-icons": {
+		"notification": "<span foreground='red'><sup></sup></span>",
+		"none": "",
+		"dnd-notification": "<span foreground='red'><sup></sup></span>",
+		"dnd-none": "",
+		"inhibited-notification": "<span foreground='red'><sup></sup></span>",
+		"inhibited-none": "",
+		"dnd-inhibited-notification": "<span foreground='red'><sup></sup></span>",
+		"dnd-inhibited-none": ""
+	},
+	"return-type": "json",
+	"exec-if": "which swaync-client",
+	"exec": "swaync-client -swb",
+	"on-click": "sleep 0.1 && swaync-client -t -sw",
+	"on-click-right": "swaync-client -d -sw",
+	"escape": true
+},
+
+// Separators
+"custom/separator#dot": {
+	"format": "",
+	"interval": "once",
+	"tooltip": false
+},
+"custom/separator#dot-line": {
+	"format": "",
+	"interval": "once",
+	"tooltip": false
+},
+"custom/separator#line": {
+	"format": "|",
+	"interval": "once",
+	"tooltip": false
+},
+"custom/separator#blank": {
+	"format": "",
+	"interval": "once",
+	"tooltip": false
+},
+"custom/separator#blank_2": {
+	"format": "  ",
+	"interval": "once",
+	"tooltip": false
+},
+"custom/cpufreq": {
+    "exec": "echo \"$(cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor) $(awk '{printf \"%.1f GHz\", $1/1e6}' /sys/devices/system/cpu/cpu0/cpufreq/scaling_cur_freq)\"",
+    "interval": 5,
+    "format": " {}",
+    "tooltip": true,
+    "tooltip-format": "CPU Governor & Frequency"
+}
+}

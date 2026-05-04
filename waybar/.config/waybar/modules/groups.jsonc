@@ -1,0 +1,59 @@
+/* ---- https://github.com/JaKooLit ---- */
+/* Waybar Module Groups */
+/* NOTE: Groups allow collapsible/expandable modules */
+
+{
+  // ===== SYSTEM MONITORING GROUP =====
+  // Click CPU to expand: Temperature, CPU, Power Profile, Memory, Disk
+  "group/mobo_drawer": {
+    "orientation": "inherit",
+    "drawer": {
+      "transition-duration": 500,
+      "children-class": "cpu",
+      "transition-left-to-right": true
+    },
+    "modules": [
+      "temperature",
+      "cpu",
+      "memory",
+      "disk"
+    ]
+  },
+
+  // ===== AUDIO CONTROL GROUP =====
+  // Click Volume to expand: Volume and Microphone
+  "group/audio": {
+    "orientation": "inherit",
+     "modules": [
+      "pulseaudio",
+      "pulseaudio#microphone"
+    ]
+  },
+
+  // ===== NOTIFICATION CENTER GROUP =====
+  // Single module group for consistency
+  "group/notify": {
+    "orientation": "inherit",
+    "drawer": {
+      "transition-duration": 500,
+      "children-class": "custom/swaync",
+      "transition-left-to-right": false
+    },
+    "modules": [
+      "custom/swaync"
+    ]
+  },
+
+  "group/state": {
+    "orientation": "inherit",
+    "drawer": {
+      "transition-duration": 300,
+      "children-class": "custom/power",
+      "transition-left-to-right": false
+    },
+    "modules": [
+      "custom/power",
+      "idle_inhibitor"
+    ]
+  }
+ }

@@ -1,0 +1,38 @@
+{
+  "include": [
+    "$HOME/.config/waybar/modules/base.jsonc",
+    "$HOME/.config/waybar/modules/custom.jsonc",
+    "$HOME/.config/waybar/modules/workspaces.jsonc",
+    "$HOME/.config/waybar/modules/groups.jsonc"
+  ],
+  "layer": "top",
+  "exclusive": true,
+  "passthrough": false,
+  "position": "top",
+  "spacing": 3,
+  "fixed-center": true,
+  "ipc": true,
+  "margin-top": 0,
+  "margin-left": 4,
+  "margin-right": 4,
+  "modules-left": [
+    "clock",
+    "custom/separator#line",
+    "tray",
+    "custom/separator#blank",
+    "backlight",
+    "battery"
+  ],
+  "modules-center": [
+    "niri/workspaces"
+  ],
+  "modules-right": [
+    "group/audio",
+    "custom/cpufreq",
+    "group/mobo_drawer", 
+    "custom/separator#blank_2",
+    "group/notify",
+    "custom/separator#line",
+    "group/state"
+  ]
+}

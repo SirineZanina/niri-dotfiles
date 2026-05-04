@@ -184,8 +184,12 @@ layout {
     }
 }
 
-spawn-at-startup "qs" "-c" "/etc/xdg/quickshell/noctalia-shell"
+spawn-at-startup "waybar"
+spawn-at-startup "mako"
+spawn-at-startup "swww-daemon"
 spawn-at-startup "/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1"
+spawn-at-startup "nm-applet" "--indicator"
+spawn-at-startup "blueman-applet"
 spawn-at-startup "sh" "-c" "wl-paste --type text --watch cliphist store"
 spawn-at-startup "sh" "-c" "wl-paste --type image --watch cliphist store"
 spawn-at-startup "swayidle" "-w"
@@ -269,22 +273,11 @@ window-rule {
     open-floating true
 }
 
-layer-rule {
-    match namespace=r#"^noctalia-(background|launcher-overlay|dock)-.*$"#
-    background-effect {
-        xray false
-    }
-}
-
 blur {
     passes 3
     offset 5.0
     noise 0.02
     saturation 1.0
-}
-
-debug {
-    honor-xdg-activation-with-invalid-serial
 }
 
 binds {
