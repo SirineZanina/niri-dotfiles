@@ -1,0 +1,6 @@
+timeout 150 'brightnessctl -s set 10' resume 'brightnessctl -r'
+timeout 150 'brightnessctl -sd rgb:kbd_backlight set 0' resume 'brightnessctl -rd rgb:kbd_backlight'
+timeout 300 'loginctl lock-session'
+timeout 330 'niri msg action power-off-monitors' resume 'niri msg action power-on-monitors && brightnessctl -r'
+timeout 1800 'systemctl suspend'
+before-sleep 'loginctl lock-session'
