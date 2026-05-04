@@ -269,13 +269,6 @@ window-rule {
     open-floating true
 }
 
-window-rule {
-    background-effect {
-        blur true
-        xray false
-    }
-}
-
 layer-rule {
     match namespace=r#"^noctalia-(background|launcher-overlay|dock)-.*$"#
     background-effect {
