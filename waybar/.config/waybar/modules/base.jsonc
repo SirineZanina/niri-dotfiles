@@ -91,20 +91,6 @@
 	"tooltip-format": "{used} used out of {total} on {path} ({percentage_used}%)"
 },
 
-"niri/window": {
-	"format": "{}",
-	"max-length": 55,
-	"separate-outputs": true,
-	
-	
-	"rewrite": {
-		"(.*) — Mozilla Firefox": " $1",
-		"(.*) - fish": "> [$1]",
-		"(.*) - zsh": "> [$1]",
-		"(.*) - $term": "> [$1]"
-	}
-},
-
 "idle_inhibitor": {
 	"tooltip": true,
 	"tooltip-format-activated": "Idle_inhibitor active",
@@ -125,19 +111,6 @@
 	"on-click-right": "alacritty -e btop"
 },
 
-
-"power-profiles-daemon": {
-  "format": "{icon} ",
-  "tooltip-format": "Power profile: {profile}\nDriver: {driver}",
-  "tooltip": true,
-  "format-icons": {
-    "default": "",
-    "performance": "",
-    "balanced": "",
-    "power-saver": ""
-  }
-},
-
 "pulseaudio": {
 	"format": "{icon} {volume}%",
 	"format-bluetooth": "{icon} 󰂰 {volume}%",
@@ -155,33 +128,11 @@
     "tooltip-format": "{icon} {desc} | {volume}%"
   },
 
-"pulseaudio#microphone": {
-    "format": "{format_source}",
-   	"format-source": " {volume}%",
-	  "format-source-muted": "",
-    "on-click": "wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle",
-    "on-click-right": "pavucontrol -t 4",
-    "on-scroll-up": "wpctl set-volume -l 1.0 @DEFAULT_AUDIO_SOURCE@ 5%+",
-    "on-scroll-down": "wpctl set-volume @DEFAULT_AUDIO_SOURCE@ 5%-",
-    "tooltip-format": "{source_desc} | {source_volume}%",
-    "scroll-step": 5
- },
-
 "tray": {
-	"icon-size": 20,
-	"spacing": 4
+  "spacing": 8
 },
-
-"network": {
-	"interface": "wlo1",
-	"format-wifi": "󰤨 {essid}",
-	"format-ethernet": "󰈀 {ipaddr}",
-	"format-disconnected": "󰤭 ",
-	"format-linked": "󰈀 (no IP)",
-	"tooltip-format-wifi": "{essid} ({signalStrength}%) 󰤨\n{ipaddr}",
-	"tooltip-format-ethernet": "{ifname} 󰈀\n{ipaddr}",
-	"tooltip-format-disconnected": "Disconnected",
-	"max-length": 24,
-	"on-click": "nm-connection-editor"
+"niri/workspaces": {
+  "format": "{id}",
+  "active-only": false
 }
 }

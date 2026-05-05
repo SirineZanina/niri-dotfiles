@@ -1,98 +1,86 @@
 * {
   font-family: "JetBrainsMono Nerd Font Propo", monospace;
-  font-size: 14px;
+  font-size: 13px;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+  transition: background 120ms ease;
+}
+
+.floating-notifications {
+  background: transparent;
 }
 
 .notification-row {
   outline: none;
 }
 
-.notification-row:focus,
-.notification-row:hover {
-  opacity: 1;
-  background: #313244;
-}
-
 .notification {
-  border-radius: 12px;
-  margin: 6px 12px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+  margin: 4px 8px;
   padding: 0;
+  border-radius: 8px;
 }
 
 .notification-content {
   background: #1e1e2e;
-  border: 1px solid #313244;
-  border-radius: 12px;
-  padding: 12px;
+  border-radius: 8px;
+  padding: 10px 12px;
   color: #cdd6f4;
 }
 
 .notification-default-action {
-  border-radius: 12px;
   background: transparent;
+  border-radius: 8px;
+  padding: 0;
 }
 
 .notification-default-action:hover {
-  background: #313244;
+  background: #181825;
 }
 
 .close-button {
-  background: #f38ba8;
-  color: #1e1e2e;
-  border-radius: 100%;
-  border: none;
-  margin: 6px;
-  min-width: 24px;
-  min-height: 24px;
+  background: transparent;
+  color: #45475a;
+  border-radius: 4px;
+  margin: 4px;
+  min-width: 18px;
+  min-height: 18px;
+  font-size: 11px;
 }
 
 .close-button:hover {
-  background: #eba0ac;
+  background: #313244;
+  color: #f38ba8;
 }
 
 .notification-action-button {
-  border-radius: 8px;
   background: #313244;
   color: #cdd6f4;
-  border: none;
-  margin: 4px;
-  padding: 4px 8px;
+  border-radius: 6px;
+  margin: 2px 4px;
+  padding: 4px 10px;
+  font-size: 12px;
 }
 
 .notification-action-button:hover {
   background: #45475a;
 }
 
-.urgency-low {
-  border-left: 3px solid #89b4fa;
+.notification-app-icon {
+  border-radius: 6px;
+  min-width: 36px;
+  min-height: 36px;
 }
 
-.urgency-normal {
-  border-left: 3px solid #74c7ec;
-}
+.urgency-low      { border-left: 2px solid #89b4fa; }
+.urgency-normal   { border-left: 2px solid #89dceb; }
+.urgency-critical { border-left: 2px solid #f38ba8; }
 
-.urgency-critical {
-  border-left: 3px solid #f38ba8;
-  animation: blink 1s infinite;
-}
-
-@keyframes blink {
-  50% { opacity: 0.6; }
-}
-
-.notification-group {
-  margin: 2px 12px;
-  border-radius: 12px;
-}
-
-/* Control center */
 .control-center {
-  background: #1e1e2e;
-  border: 1px solid #313244;
-  border-radius: 16px;
+  background: #11111b;
   color: #cdd6f4;
   padding: 8px;
+  border-radius: 12px;
 }
 
 .control-center-list {
@@ -100,66 +88,71 @@
 }
 
 .control-center-list-placeholder {
-  opacity: 0.5;
+  opacity: 0.3;
+  color: #6c7086;
 }
 
-.floating-notifications {
-  background: transparent;
-}
-
-/* Title widget */
 .widget-title {
   color: #cdd6f4;
-  font-size: 16px;
+  font-size: 12px;
   font-weight: bold;
-  background: #181825;
-  border-radius: 12px;
-  padding: 8px 12px;
-  margin: 4px;
+  background: transparent;
+  padding: 6px 8px;
+  margin: 2px 0;
 }
 
 .widget-title > button {
-  background: #313244;
-  border: none;
-  border-radius: 8px;
-  color: #cdd6f4;
-  padding: 4px 10px;
+  background: #1e1e2e;
+  border-radius: 6px;
+  color: #6c7086;
+  padding: 2px 8px;
+  font-size: 11px;
 }
 
 .widget-title > button:hover {
-  background: #45475a;
-}
-
-/* DND toggle */
-.widget-dnd {
-  background: #181825;
-  border-radius: 12px;
-  padding: 8px 12px;
-  margin: 4px;
+  background: #313244;
   color: #cdd6f4;
 }
 
+.widget-dnd {
+  background: transparent;
+  padding: 4px 8px;
+  margin: 2px 0;
+  color: #6c7086;
+  font-size: 12px;
+}
+
 .widget-dnd > switch {
-  border-radius: 12px;
-  background: #313244;
-  border: none;
+  background: #1e1e2e;
+  border-radius: 100px;
+  min-width: 34px;
+  min-height: 16px;
 }
 
 .widget-dnd > switch:checked {
-  background: #74c7ec;
+  background: #89b4fa;
 }
 
 .widget-dnd > switch slider {
   background: #cdd6f4;
   border-radius: 100%;
-  border: none;
-  min-width: 18px;
-  min-height: 18px;
+  min-width: 12px;
+  min-height: 12px;
 }
 
-/* App icon */
-.notification-app-icon {
+.notification-group {
+  margin: 2px 8px;
   border-radius: 8px;
-  min-width: 48px;
-  min-height: 48px;
+}
+
+.notification-group-collapse-button {
+  background: transparent;
+  color: #6c7086;
+  border-radius: 4px;
+  padding: 2px 6px;
+}
+
+.notification-group-collapse-button:hover {
+  background: #1e1e2e;
+  color: #cdd6f4;
 }

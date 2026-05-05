@@ -1,10 +1,8 @@
 @import "./colors.css";
-
 window#waybar {
   background-color: @background;
   color: @on_surface;
 }
-
 * {
   font-family: "JetBrainsMono Nerd Font Propo";
   font-weight: bold;
@@ -12,16 +10,14 @@ window#waybar {
   /* set font-size to 100% if font scaling is set to 1.00 using nwg-look */
   font-feature-settings: '"zero", "ss01", "ss02", "ss03", "ss04", "ss05", "cv31"';
 }
-
 tooltip {
-  background-color: #1e1e2e;
+  background-color: 
+#1e1e2e;
   border-radius: 20px;
 }
-
 tooltip label {
   color: @on_surface;
 }
-
 /*-----module groups----*/
 .modules-right,
 .modules-center,
@@ -133,17 +129,14 @@ tooltip label {
 #pulseaudio.muted {
   color: @error;
 }
-
 /* Microphone mute - different selector */
 #pulseaudio.microphone.source-muted {
   color: @error;
 }
-
 /* Make sure unmuted mic stays normal color */
 #pulseaudio.microphone {
   color: @on_surface;
 }
-
 #temperature.critical {
   color: @error;
 }
