@@ -27,43 +27,30 @@ tooltip label {
   padding: 2px 4px;
 }
 /*-----modules indv----*/
-#taskbar button,
 #workspaces button {
   color: @outline;
+  background: transparent;
   box-shadow: none;
   text-shadow: none;
-  padding: 0px;
-  padding-bottom: 0px;
-  padding-top: 1px;
-  border-radius: 9px;
-  padding-left: 4px;
-  padding-right: 4px;
-  animation: gradient_f 20s ease-in infinite;
-  transition: all 0.5s cubic-bezier(0.55, -0.68, 0.48, 1.682);
+  border-radius: 6px;
+  padding: 2px 7px;
+  min-width: 18px;
+  transition: all 0.2s ease;
 }
-#taskbar button:hover,
 #workspaces button:hover {
-  color: @on_secondary_fixed_variant;
-  border-radius: 20px;
-  padding-left: 2px;
-  padding-right: 2px;
-  animation: gradient_f 20s ease-in infinite;
-  transition: all 0.3s cubic-bezier(0.55, -0.68, 0.48, 1.682);
+  color: @on_surface;
+  background: @outline_variant;
+  border-radius: 6px;
 }
-#taskbar button.active,
 #workspaces button.active {
   color: @primary;
-  padding-left: 8px;
-  padding-right: 8px;
-  animation: gradient_f 20s ease-in infinite;
-  transition: all 0.3s cubic-bezier(0.55, -0.68, 0.48, 1.682);
+  background: @surface_container_high;
+  border-radius: 6px;
+  font-weight: bold;
 }
 #workspaces button.urgent {
-  color: @on_secondary;
-  border-radius: 10px;
-}
-#workspaces button.persistent {
-  border-radius: 10px;
+  color: @error;
+  background: transparent;
 }
 #backlight,
 #battery,
