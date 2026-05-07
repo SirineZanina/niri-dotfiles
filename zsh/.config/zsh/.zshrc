@@ -21,29 +21,28 @@ source "${ZINIT_HOME}/zinit.zsh"
 # PLUGINS
 # ============================================================================
 
-# Zsh plugins
-zinit light zsh-users/zsh-syntax-highlighting
+# zsh-completions must be synchronous — adds to $fpath before compinit
 zinit light zsh-users/zsh-completions
-zinit light zsh-users/zsh-autosuggestions
-zinit light Aloxaf/fzf-tab
 
-# Oh My Zsh snippets
-zinit snippet OMZP::git
-zinit snippet OMZP::sudo
-zinit snippet OMZP::archlinux
-zinit snippet OMZP::aws
-zinit snippet OMZP::kubectl
-zinit snippet OMZP::kubectx
-zinit snippet OMZP::command-not-found
+# Remaining plugins deferred until after prompt (turbo mode)
+zinit ice wait lucid; zinit light zsh-users/zsh-autosuggestions
+zinit ice wait lucid; zinit light zsh-users/zsh-syntax-highlighting
+zinit ice wait lucid atload"zicompinit; zicdreplay"; zinit light Aloxaf/fzf-tab
+
+# Oh My Zsh snippets (deferred)
+zinit ice wait lucid; zinit snippet OMZP::git
+zinit ice wait lucid; zinit snippet OMZP::sudo
+zinit ice wait lucid; zinit snippet OMZP::archlinux
+zinit ice wait lucid; zinit snippet OMZP::aws
+zinit ice wait lucid; zinit snippet OMZP::kubectl
+zinit ice wait lucid; zinit snippet OMZP::kubectx
+zinit ice wait lucid; zinit snippet OMZP::command-not-found
 
 # ============================================================================
 # COMPLETIONS
 # ============================================================================
 
-# Load completions
-autoload -U compinit && compinit -d "$ZSH_COMPDUMP"
 autoload -U colors && colors
-zinit cdreplay -q
 
 # ============================================================================
 # HISTORY CONFIGURATION
@@ -202,6 +201,16 @@ rmvenv() {
   else
     rm -r $VENV_HOME/$1
   fi
+}
+
+# ============================================================================
+# JAVA VERSION SWITCHING
+# ============================================================================
+
+java-use() {
+  local ver="${1:?Usage: java-use <21|25>}"
+  sudo archlinux-java set "java-${ver}-openjdk"
+  export JAVA_HOME="/usr/lib/jvm/java-${ver}-openjdk"
 }
 
 # ============================================================================

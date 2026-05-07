@@ -3,7 +3,6 @@
     "$HOME/.config/waybar/modules/base.jsonc",
     "$HOME/.config/waybar/modules/custom.jsonc",
     "$HOME/.config/waybar/modules/groups.jsonc",
-    "$HOME/.config/waybar/modules/workspaces.jsonc"
   ],
   "layer": "top",
   "exclusive": true,
@@ -22,7 +21,6 @@
     "custom/separator#blank",
     "backlight",
     "battery",
-    "network"
   ],
   "modules-center": [
     "niri/workspaces"

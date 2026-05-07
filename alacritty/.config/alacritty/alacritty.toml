@@ -1,4 +1,3 @@
-# Alacritty Configuration
 [env]
 TERM = "xterm-256color"
 
@@ -6,9 +5,9 @@ TERM = "xterm-256color"
 padding.x = 10
 padding.y = 10
 dynamic_padding = false
-opacity = 0.9
-blur = true
+opacity = 0.95
 decorations = "None"
+blur = true
 
 [mouse]
 hide_when_typing = true
@@ -49,90 +48,64 @@ animation = "EaseOutExpo"
 duration = 0
 color = "#EBA0AC"
 
-# Catppuccin Mocha Colors
 [colors.primary]
-# OPTION 1: Darker background (easier on eyes) - CURRENTLY ACTIVE
-background = '#11111B' # crust (darkest)
-# OPTION 2: Lighter background (more contrast) - COMMENTED OUT
-# background = '#1E1E2E' # base
+background = '#0D0E15'
+foreground = '#CDD6F4'
+dim_foreground = '#CDD6F4'
+bright_foreground = '#CDD6F4'
 
-foreground = '#CDD6F4' # text
-# Bright and dim foreground colors
-dim_foreground = '#CDD6F4' # text
-bright_foreground = '#CDD6F4' # text
-
-# Cursor colors
 [colors.cursor]
-# Match the background option you chose above
-text = '#11111B' # crust (change to '#1E1E2E' if using lighter bg)
-cursor = '#F5E0DC' # rosewater
+text = '#11111B'
+cursor = '#F5E0DC'
 
 [colors.vi_mode_cursor]
-text = '#11111B' # crust (change to '#1E1E2E' if using lighter bg)
-cursor = '#B4BEFE' # lavender
+text = '#11111B'
+cursor = '#B4BEFE'
 
-# Search colors
 [colors.search.matches]
-foreground = '#11111B' # crust (change to '#1E1E2E' if using lighter bg)
-background = '#A6ADC8' # subtext0
+foreground = '#11111B'
+background = '#A6ADC8'
 
 [colors.search.focused_match]
-foreground = '#11111B' # crust (change to '#1E1E2E' if using lighter bg)
-background = '#A6E3A1' # green
+foreground = '#11111B'
+background = '#A6E3A1'
 
 [colors.footer_bar]
-foreground = '#11111B' # crust (change to '#1E1E2E' if using lighter bg)
-background = '#A6ADC8' # subtext0
+foreground = '#11111B'
+background = '#A6ADC8'
 
-# Keyboard regex hints
 [colors.hints.start]
-foreground = '#11111B' # crust (change to '#1E1E2E' if using lighter bg)
-background = '#F9E2AF' # yellow
+foreground = '#11111B'
+background = '#F9E2AF'
 
 [colors.hints.end]
-foreground = '#11111B' # crust (change to '#1E1E2E' if using lighter bg)
-background = '#A6ADC8' # subtext0
+foreground = '#11111B'
+background = '#A6ADC8'
 
-# Selection colors
 [colors.selection]
-text = '#11111B' # crust (change to '#1E1E2E' if using lighter bg)
-background = '#F5E0DC' # rosewater
+text = '#11111B'
+background = '#F5E0DC'
 
-# Normal colors
 [colors.normal]
-black = '#45475A' # surface1
-red = '#F38BA8' # red
-green = '#A6E3A1' # green
-yellow = '#F9E2AF' # yellow
-blue = '#89B4FA' # blue
-magenta = '#F5C2E7' # pink
-cyan = '#94E2D5' # teal
-white = '#BAC2DE' # subtext1
+black   = '#45475A'
+red     = '#F38BA8'
+green   = '#A6E3A1'
+yellow  = '#F9E2AF'
+blue    = '#89B4FA'
+magenta = '#F5C2E7'
+cyan    = '#94E2D5'
+white   = '#BAC2DE'
 
-# Bright colors
 [colors.bright]
-black = '#585B70' # surface2
-red = '#F38BA8' # red
-green = '#A6E3A1' # green
-yellow = '#F9E2AF' # yellow
-blue = '#89B4FA' # blue
-magenta = '#F5C2E7' # pink
-cyan = '#94E2D5' # teal
-white = '#A6ADC8' # subtext0
+black   = '#585B70'
+red     = '#F38BA8'
+green   = '#A6E3A1'
+yellow  = '#F9E2AF'
+blue    = '#89B4FA'
+magenta = '#F5C2E7'
+cyan    = '#94E2D5'
+white   = '#A6ADC8'
 
-# Dim colors
-[colors.dim]
-black = '#45475A' # surface1
-red = '#F38BA8' # red
-green = '#A6E3A1' # green
-yellow = '#F9E2AF' # yellow
-blue = '#89B4FA' # blue
-magenta = '#F5C2E7' # pink
-cyan = '#94E2D5' # teal
-white = '#BAC2DE' # subtext1
-
-
-# Key bindings
 [[keyboard.bindings]]
 key = "V"
 mods = "Control|Shift"
@@ -172,3 +145,4 @@ action = "SpawnNewInstance"
 key = "Return"
 mods = "Shift"
 chars = "\u001B\r"
+

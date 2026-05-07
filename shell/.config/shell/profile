@@ -59,6 +59,10 @@ export PATH="$HOME/.dotnet:$HOME/.dotnet/tools:$PATH"
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
 
+# FNM
+export FNM_PATH="$HOME/.local/share/fnm"
+export PATH="$FNM_PATH:$PATH"
+
 # ============================================================================
 # XDG COMPLIANT APPLICATION CONFIGS
 # ============================================================================
@@ -119,6 +123,4 @@ export LESS_TERMCAP_so="$(printf '%b' '[01;44;33m')" # Begin standout
 export LESS_TERMCAP_se="$(printf '%b' '[0m')"        # End standout
 export LESS_TERMCAP_us="$(printf '%b' '[1;32m')"     # Begin underline
 export LESS_TERMCAP_ue="$(printf '%b' '[0m')"        # End underline
-
-export QT_QPA_PLATFORM=xcb
 
