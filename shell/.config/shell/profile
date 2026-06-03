@@ -62,6 +62,7 @@ export PATH="$BUN_INSTALL/bin:$PATH"
 # FNM
 export FNM_PATH="$HOME/.local/share/fnm"
 export PATH="$FNM_PATH:$PATH"
+export FNM_DIR="$FNM_PATH"
 
 # ============================================================================
 # XDG COMPLIANT APPLICATION CONFIGS
@@ -124,3 +125,6 @@ export LESS_TERMCAP_se="$(printf '%b' '[0m')"        # End standout
 export LESS_TERMCAP_us="$(printf '%b' '[1;32m')"     # Begin underline
 export LESS_TERMCAP_ue="$(printf '%b' '[0m')"        # End underline
 
+export TMPDIR="$HOME/.cache/tmp"
+
+export OPENWEBUI_API_KEY=sk-8defb7183e42498cb6813c34e149ea9d

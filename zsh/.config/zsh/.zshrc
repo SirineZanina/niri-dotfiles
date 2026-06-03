@@ -1,5 +1,5 @@
 # Source shared profile if not already sourced
-[ -z "$XDG_CONFIG_HOME" ] && [ -f "$HOME/.config/shell/profile" ] && source "$HOME/.config/shell/profile"
+[ -f "$HOME/.config/shell/profile" ] && source "$HOME/.config/shell/profile"
 
 # ============================================================================
 # ZINIT PLUGIN MANAGER
@@ -220,11 +220,7 @@ java-use() {
 # bun completions
 [ -s "/home/sirine/.bun/_bun" ] && source "/home/sirine/.bun/_bun"
 
-# ============================================================================
-# FNM (must be before oh-my-posh)
-# ============================================================================
-
-# Ensure fnm shims take priority over any system Node (/usr/bin/node)
+# FNM
 export PATH="$FNM_DIR/aliases/default/bin:$PATH"
 eval "$(fnm env --use-on-cd --shell zsh)"
 
@@ -233,3 +229,4 @@ eval "$(fnm env --use-on-cd --shell zsh)"
 # ============================================================================
 
 eval "$(oh-my-posh init zsh --config $HOME/.config/ohmyposh/zen.toml)"
+

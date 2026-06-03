@@ -2,7 +2,6 @@ prefer-no-csd
 
 environment {
     QT_QPA_PLATFORM "wayland"
-    QS_ICON_THEME "Papirus-Dark"
 }
 
 cursor {
@@ -32,7 +31,6 @@ output "eDP-1" {
     mode "1920x1080@144.149"
     position x=1280 y=0
 }
-
 output "HDMI-A-2" {
     mode "1680x1050@59.954"
     position x=3200 y=0
@@ -85,16 +83,19 @@ blur {
 }
 
 spawn-at-startup "/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1"
+spawn-at-startup "gnome-keyring-daemon" "--start" "--components=secrets"
 spawn-sh-at-startup "wl-paste --type text --watch cliphist store"
 spawn-sh-at-startup "wl-paste --type image --watch cliphist store"
-spawn-at-startup "swayidle" "-w" "timeout" "300" "hyprlock" "timeout" "600" "qs -c noctalia-shell ipc call sessionMenu lockAndSuspend"
-spawn-at-startup "qs" "-c" "noctalia-shell"
+spawn-at-startup "hypridle"
+spawn-at-startup "noctalia"
+spawn-at-startup "protonvpn-app"
 
 xwayland-satellite {
     path "xwayland-satellite"
 }
 
 hotkey-overlay {
+    skip-at-startup
 }
 
 screenshot-path "~/Pictures/Screenshots/Screenshot from %Y-%m-%d %H-%M-%S.png"
@@ -122,8 +123,16 @@ window-rule {
     opacity 0.9
 }
 
+// Noctalia v5 settings window
 window-rule {
-    geometry-corner-radius 6
+    match app-id="dev.noctalia.Noctalia.Settings"
+    open-floating true
+    default-column-width { fixed 1080; }
+    default-window-height { fixed 920; }
+}
+
+window-rule {
+    geometry-corner-radius 4
     clip-to-geometry true
 }
 
@@ -134,15 +143,16 @@ window-rule {
     }
 }
 
+// Noctalia v5 layer rules
 layer-rule {
-    match namespace="^noctalia-(background|launcher-overlay|dock)-.*$"
+    match namespace="^noctalia-(bar-[^\"]+|notification|dock|panel)$"
     background-effect {
         xray false
     }
 }
 
 layer-rule {
-    match namespace="^noctalia-overview*"
+    match namespace="^noctalia-backdrop"
     place-within-backdrop true
 }
 
@@ -154,13 +164,15 @@ binds {
     Mod+E hotkey-overlay-title="File Manager: thunar" { spawn "thunar"; }
     Mod+B hotkey-overlay-title="Browser: brave" { spawn "brave"; }
     Mod+P hotkey-overlay-title="Display Layout" { spawn-sh "~/.config/rofi/displaymenu/displaymenu.sh"; }
-    Mod+D hotkey-overlay-title="App Launcher" { spawn "qs" "-c" "noctalia-shell" "ipc" "call" "launcher" "toggle"; }
-    Mod+Escape hotkey-overlay-title="Session Menu" { spawn "qs" "-c" "noctalia-shell" "ipc" "call" "sessionMenu" "toggle"; }
-    Mod+W hotkey-overlay-title="Wallpaper Picker" { spawn "qs" "-c" "noctalia-shell" "ipc" "call" "wallpaper" "toggle"; }
+    Mod+D hotkey-overlay-title="App Launcher" { spawn-sh "noctalia msg panel-toggle launcher"; }
+    Mod+Escape hotkey-overlay-title="Session Menu" { spawn-sh "noctalia msg panel-toggle session-menu"; }
+    Mod+W hotkey-overlay-title="Wallpaper Picker" { spawn-sh "noctalia msg panel-toggle wallpaper"; }
+    Mod+S hotkey-overlay-title="Noctalia Settings" { spawn-sh "noctalia msg settings-toggle"; }
 
-    Mod+N  { spawn "qs" "-c" "noctalia-shell" "ipc" "call" "notificationCenter" "toggle"; }
-    Mod+Ctrl+N { spawn "qs" "-c" "noctalia-shell" "ipc" "call" "controlCenter" "toggle"; }
+    Mod+N { spawn-sh "noctalia msg panel-toggle notifications"; }
+    Mod+Ctrl+N { spawn-sh "noctalia msg panel-toggle control-center"; }
     Mod+F12 hotkey-overlay-title="Lock Screen" { spawn "hyprlock"; }
+    Mod+Alt+C hotkey-overlay-title="Color Picker" { spawn "hyprpicker" "-a"; }
 
     Super+Alt+S allow-when-locked=true hotkey-overlay-title=null { spawn-sh "pkill orca || exec orca"; }
 
@@ -277,9 +289,9 @@ binds {
     Mod+Comma  { consume-window-into-column; }
     Mod+Period { expel-window-from-column; }
 
-    Mod+Shift+R  { switch-preset-column-width; }
+    Mod+Shift+R      { switch-preset-column-width; }
     Mod+Ctrl+Shift+R { switch-preset-window-height; }
-    Mod+Ctrl+R   { reset-window-height; }
+    Mod+Ctrl+R       { reset-window-height; }
 
     Mod+F       { maximize-column; }
     Mod+Shift+F { fullscreen-window; }
@@ -316,7 +328,9 @@ binds {
 
     Mod+Shift+Escape allow-inhibiting=false { toggle-keyboard-shortcuts-inhibit; }
 
-    Mod+Shift+E    { quit; }
+    Mod+Shift+E { quit; }
 
     Mod+Shift+P { power-off-monitors; }
 }
+
+include "noctalia.kdl"

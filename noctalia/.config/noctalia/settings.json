@@ -256,7 +256,7 @@
         "manualSunrise": "06:30",
         "manualSunset": "18:30",
         "monitorForColors": "",
-        "predefinedScheme": "Catppuccin Lavender",
+        "predefinedScheme": "Gruvbox",
         "schedulingMode": "off",
         "syncGsettings": true,
         "useWallpaperColors": true
@@ -441,7 +441,7 @@
     },
     "idle": {
         "customCommands": "[]",
-        "enabled": true,
+        "enabled": false,
         "fadeDuration": 5,
         "lockCommand": "",
         "lockTimeout": 660,
