@@ -19,8 +19,8 @@ export ZDOTDIR="$HOME/.config/zsh"
 # ============================================================================
 export EDITOR="nvim"
 export VISUAL="nvim"
-export TERMINAL="alacritty"
-export BROWSER="firefox"
+export TERMINAL="kitty"
+export BROWSER="brave"
 export PAGER="less"
 
 # ============================================================================
