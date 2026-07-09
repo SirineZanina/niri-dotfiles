@@ -22,7 +22,7 @@ _Launcher_
 
 ![launcher](.screenshots/app_launcher.png)
 
-_Lazygit__
+_Lazygit_
 
 ![terminal](.screenshots/lazygit.png)
 
@@ -73,7 +73,6 @@ dotfiles/
 ├── qt/.config/qt5ct/  qt6ct/
 ├── qt6ct/.config/qt6ct/
 ├── rofi/.config/rofi/
-├── scripts/.local/bin/
 ├── shell/.config/shell/       # shared alias / profile / secrets
 ├── swayidle/.config/swayidle/
 ├── swaync/.config/swaync/
