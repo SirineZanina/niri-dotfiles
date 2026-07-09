@@ -11,7 +11,13 @@
   },
   "logo": {
     "type": "auto",
-    "source": "~/.config/fastfetch/logo/arch.txt"
+    "source": "~/.config/fastfetch/logo/logo.png",
+    "width": 20,
+    "height": 14,
+    "padding": {
+      "top": 0,
+      "left": 1
+    }
   },
   "modules": [
     "break",
@@ -58,6 +64,8 @@
       "type": "command",
       "key": "wm",
       "keyColor": "#89DCEB",
+      "text": "echo 'Quartz Compositor'",
+      "format": "{1}"
     },
     {
       "type": "uptime",
@@ -76,20 +84,15 @@
       "keyColor": "#94E2D5",
       "format": "{used} / {total}"
     },
-{
-  "type": "disk",
-  "key": "root",
-  "keyColor": "#74C7EC",
-  "folders": ["/"],
-  "format": "{size-used} / {size-total}"
-},
-{
-  "type": "disk",
-  "key": "home",
-  "keyColor": "#74C7EC",
-  "folders": ["/home"],
-  "format": "{size-used} / {size-total}"
-},
+    {
+      "type": "disk",
+      "key": "disk",
+      "keyColor": "#74C7EC",
+      "folders": [
+        "/"
+      ],
+      "format": "{size-used} / {size-total}"
+    },
     {
       "type": "command",
       "key": "bat",

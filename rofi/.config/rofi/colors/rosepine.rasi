@@ -1,0 +1,11 @@
+* {
+    surface:           #191724FF;
+    surface-container: #1F1D2EFF;
+    on-surface:        #E0DEF4FF;
+    primary:           #C4A7E7FF;
+    on-primary:        #191724FF;
+    secondary:         #9CCFD8FF;
+    on-secondary:      #191724FF;
+    error:             #EB6F92FF;
+    on-error:          #191724FF;
+}

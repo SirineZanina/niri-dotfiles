@@ -127,4 +127,5 @@ export LESS_TERMCAP_ue="$(printf '%b' '[0m')"        # End underline
 
 export TMPDIR="$HOME/.cache/tmp"
 
-export OPENWEBUI_API_KEY=sk-8defb7183e42498cb6813c34e149ea9d
+# Starship
+export STARSHIP_CONFIG="$HOME/.config/starship/starship.toml"

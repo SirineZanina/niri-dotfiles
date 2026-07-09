@@ -1,0 +1,60 @@
+# Wallpaper
+[wallpaper]
+enabled = true
+fill_mode = "crop"
+directory = "~/Pictures/wallpapers"
+
+[wallpaper.default]
+path = "~/Pictures/wallpapers/default.png"  # change to an actual image
+
+[backdrop]
+enabled = true
+blur_intensity = 0.4
+tint_intensity = 0.2
+
+# Night Light
+[nightlight]
+enabled = true
+force = false
+temperature_day = 6500
+temperature_night = 5000
+
+# Notifications
+[notification]
+enable_daemon = true
+show_app_name = true
+position = "bottom_right"
+layer = "top"
+scale = 1.0
+background_opacity = 0.97
+offset_x = 20
+offset_y = 8
+collapse_on_dismiss = true
+
+# Control Center
+[control_center]
+sidebar = "compact"
+sidebar_section = "compact"
+
+[[control_center.shortcuts]]
+type = "wifi"
+
+[[control_center.shortcuts]]
+type = "bluetooth"
+
+[[control_center.shortcuts]]
+type = "nightlight"
+
+[[control_center.shortcuts]]
+type = "notification"
+
+[[control_center.shortcuts]]
+type = "wallpaper"
+
+[[control_center.shortcuts]]
+type = "session"
+
+[shell.screenshot]
+directory = "~/Pictures/Screenshots"
+save-to-file = true
+copy-to-clipboard = false

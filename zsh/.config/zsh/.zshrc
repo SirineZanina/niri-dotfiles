@@ -17,25 +17,26 @@ fi
 # Load Zinit
 source "${ZINIT_HOME}/zinit.zsh"
 
+autoload -Uz compinit
+compinit -C -d ~/.config/zsh/.zcompdump
+
 # ============================================================================
 # PLUGINS
 # ============================================================================
 
-# zsh-completions must be synchronous — adds to $fpath before compinit
 zinit light zsh-users/zsh-completions
 
-# Remaining plugins deferred until after prompt (turbo mode)
 zinit ice wait lucid; zinit light zsh-users/zsh-autosuggestions
 zinit ice wait lucid; zinit light zsh-users/zsh-syntax-highlighting
-zinit ice wait lucid atload"zicompinit; zicdreplay"; zinit light Aloxaf/fzf-tab
+zinit ice wait lucid atload"zicdreplay"; zinit light Aloxaf/fzf-tab
 
 # Oh My Zsh snippets (deferred)
 zinit ice wait lucid; zinit snippet OMZP::git
 zinit ice wait lucid; zinit snippet OMZP::sudo
 zinit ice wait lucid; zinit snippet OMZP::archlinux
-zinit ice wait lucid; zinit snippet OMZP::aws
-zinit ice wait lucid; zinit snippet OMZP::kubectl
-zinit ice wait lucid; zinit snippet OMZP::kubectx
+#zinit ice wait lucid; zinit snippet OMZP::aws
+#zinit ice wait lucid; zinit snippet OMZP::kubectl
+#zinit ice wait lucid; zinit snippet OMZP::kubectx
 zinit ice wait lucid; zinit snippet OMZP::command-not-found
 
 # ============================================================================
@@ -98,24 +99,6 @@ zstyle ':fzf-tab:complete:cd:*' fzf-preview 'ls --color $realpath'
 
 bindkey -v
 export KEYTIMEOUT=1
-
-# Vi mode cursor shape
-function zle-keymap-select {
-  if [[ ${KEYMAP} == vicmd ]] || [[ $1 = 'block' ]]; then
-    echo -ne '\e[1 q'  # Block cursor for normal mode
-  elif [[ ${KEYMAP} == main ]] || [[ ${KEYMAP} == viins ]] || [[ ${KEYMAP} = '' ]] || [[ $1 = 'beam' ]]; then
-    echo -ne '\e[5 q'  # Beam cursor for insert mode
-  fi
-}
-
-zle -N zle-keymap-select
-
-function zle-line-init {
-  echo -ne '\e[5 q'  # Start with beam cursor
-}
-
-# Initialize cursor on shell start
-echo -ne '\e[5 q'
 
 # ============================================================================
 # KEYBINDINGS
@@ -222,11 +205,18 @@ java-use() {
 
 # FNM
 export PATH="$FNM_DIR/aliases/default/bin:$PATH"
-eval "$(fnm env --use-on-cd --shell zsh)"
+
+# Instead of eval at startup, only run when needed
+fnm() {
+  unfunction fnm
+  eval "$(command fnm env --use-on-cd --shell zsh)"
+  fnm "$@"
+}
 
 # ============================================================================
-# OH MY POSH (MUST BE LAST)
+# STARSHIP (MUST BE LAST)
 # ============================================================================
 
-eval "$(oh-my-posh init zsh --config $HOME/.config/ohmyposh/zen.toml)"
+eval "$(starship init zsh)"
 
+. "$HOME/.local/share/../bin/env"

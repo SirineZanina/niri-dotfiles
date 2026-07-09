@@ -8,7 +8,7 @@ TERM = "xterm-256color"
 padding.x = 10
 padding.y = 10
 dynamic_padding = false
-opacity = 0.95
+opacity = 0.85
 decorations = "None"
 blur = true
 

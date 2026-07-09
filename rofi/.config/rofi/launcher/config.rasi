@@ -6,64 +6,56 @@ configuration {
     display-run:         "";
     drun-display-format: "{name}";
     steal-focus:         false;
+    matching:            "regex";
+    fixed-height:        true;
 }
 
 @import ".config/rofi/shared/colors.rasi"
 @import ".config/rofi/shared/fonts.rasi"
 
+/* ── Palette ──────────────────────────────────────────────────────────── */
 * {
-    bg:       @surface;
-    bg-alt:   @surface-container;
-    fg:       @on-surface;
-    accent:   @primary;
-    on-accent: @on-primary;
+    bg0:     @surface;
+    bg1:     @surface-container;
+    bg2:     @surface-container;
+    fg0:     @on-surface;
+    fg1:     @on-surface;
+    fg2:     @on-surface;
+    accent:  @primary;
+    urgent:  @error;
+    cyan:    @secondary;
 
-    normal-background:           transparent;
-    normal-foreground:           @on-surface;
-    alternate-normal-background: transparent;
-    alternate-normal-foreground: @on-surface;
-    selected-normal-background:  @primary;
-    selected-normal-foreground:  @on-primary;
-    urgent-background:           transparent;
-    urgent-foreground:           @error;
-    selected-urgent-background:  @error;
-    selected-urgent-foreground:  @on-error;
-    active-background:           transparent;
-    active-foreground:           @secondary;
-    selected-active-background:  @secondary;
-    selected-active-foreground:  @on-secondary;
-    alternate-urgent-background: transparent;
-    alternate-urgent-foreground: @error;
-    alternate-active-background: transparent;
-    alternate-active-foreground: @secondary;
+    background-color: transparent;
+    text-color:       @on-surface;
 }
 
+/* ── Window ───────────────────────────────────────────────────────────── */
 window {
-    transparency:     "real";
-    location:         center;
-    anchor:           center;
-    width:            560px;
+    width:            520px;
+    background-color: @bg0;
     border:           2px solid;
-    border-radius:    8px;
     border-color:     @accent;
-    background-color: @bg;
+    border-radius:    4px;
+    padding:          0;
     cursor:           "default";
 }
 
+/* ── Main box ─────────────────────────────────────────────────────────── */
 mainbox {
-    spacing:          10px;
-    padding:          16px;
     background-color: transparent;
-    children:         [ "inputbar", "listview" ];
+    children:         [ inputbar, listview ];
+    spacing:          0;
+    padding:          12px;
 }
 
+/* ── Input bar ────────────────────────────────────────────────────────── */
 inputbar {
-    spacing:          8px;
+    background-color: @bg1;
     padding:          10px 14px;
-    border-radius:    6px;
-    background-color: @bg-alt;
-    text-color:       @fg;
-    children:         [ "textbox-prompt-colon", "entry" ];
+    margin:           0 0 10px 0;
+    border-radius:    4px;
+    children:         [ textbox-prompt-colon, entry ];
+    spacing:          6px;
 }
 
 textbox-prompt-colon {
@@ -75,53 +67,57 @@ textbox-prompt-colon {
 
 entry {
     background-color:  transparent;
-    text-color:        @fg;
-    cursor:            text;
+    text-color:        @fg0;
     placeholder:       "Search apps…";
-    placeholder-color: @bg-alt;
+    placeholder-color: @fg2;
+    cursor:            text;
 }
 
+/* ── List view ────────────────────────────────────────────────────────── */
 listview {
+    background-color: transparent;
     columns:          1;
     lines:            8;
+    spacing:          4px;
     cycle:            true;
     dynamic:          true;
     scrollbar:        false;
-    fixed-height:     true;
-    spacing:          4px;
-    background-color: transparent;
+    fixed-height:     false;
     cursor:           "default";
 }
 
+/* ── List elements ────────────────────────────────────────────────────── */
 element {
-    spacing:          10px;
-    padding:          8px 12px;
-    border-radius:    6px;
     background-color: transparent;
-    text-color:       @fg;
+    text-color:       @fg0;
+    border-radius:    4px;
+    padding:          8px 12px;
+    spacing:          8px;
+    orientation:      horizontal;
     cursor:           pointer;
 }
 
+element normal.normal    { background-color: transparent; text-color: @fg0;    }
+element normal.urgent    { background-color: transparent; text-color: @urgent; }
+element normal.active    { background-color: transparent; text-color: @cyan;   }
+element alternate.normal { background-color: transparent; text-color: @fg0;    }
+element alternate.urgent { background-color: transparent; text-color: @urgent; }
+element alternate.active { background-color: transparent; text-color: @cyan;   }
+
+element selected.normal  { background-color: @accent; text-color: @on-primary;   }
+element selected.urgent  { background-color: @urgent; text-color: @on-error;     }
+element selected.active  { background-color: @cyan;   text-color: @on-secondary; }
+
 element-icon {
-    size:             24px;
     background-color: transparent;
+    size:             24px;
     cursor:           inherit;
 }
 
 element-text {
     background-color: transparent;
     text-color:       inherit;
+    cursor:           inherit;
     vertical-align:   0.5;
     horizontal-align: 0.0;
-    cursor:           inherit;
 }
-
-element normal.normal    { background-color: transparent; text-color: @fg;           }
-element normal.urgent    { background-color: transparent; text-color: @error;        }
-element normal.active    { background-color: transparent; text-color: @secondary;    }
-element alternate.normal { background-color: transparent; text-color: @fg;           }
-element alternate.urgent { background-color: transparent; text-color: @error;        }
-element alternate.active { background-color: transparent; text-color: @secondary;    }
-element selected.normal  { background-color: @accent;     text-color: @on-accent;    }
-element selected.urgent  { background-color: @error;      text-color: @on-error;     }
-element selected.active  { background-color: @secondary;  text-color: @on-secondary; }

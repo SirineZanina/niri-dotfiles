@@ -1,0 +1,53 @@
+[bar]
+order = ["main"]
+
+[bar.main]
+background_opacity = 0.4
+capsule = false
+border_width = 0.0
+center = ["workspaces"]
+end = ["tray", "group:g1", "group:g2", "group:g5"]
+margin_edge = 3
+reserve_space = true
+start = ["group:g3", "group:g4", "media"]
+widget_spacing = 12
+
+[[bar.main.capsule_group]]
+fill = "surface_variant"
+id = "g1"
+members = ["volume", "input_volume"]
+opacity = 0.5
+padding = 6.0
+radius = 10.0
+
+[[bar.main.capsule_group]]
+fill = "surface_variant"
+id = "g2"
+members = ["brightness", "battery"]
+opacity = 0.5
+padding = 6.0
+radius = 10.0
+
+[[bar.main.capsule_group]]
+fill = "surface_variant"
+id = "g3"
+members = ["clock", "date"]
+opacity = 0.5
+padding = 6.0
+radius = 10.0
+
+[[bar.main.capsule_group]]
+fill = "surface_variant"
+id = "g4"
+members = ["cpu", "ram", "temp"]
+opacity = 0.5
+padding = 6.0
+radius = 10.0
+
+[[bar.main.capsule_group]]
+fill = "surface_variant"
+id = "g5"
+members = ["notifications", "control-center"]
+opacity = 0.5
+padding = 6.0
+radius = 10.0
