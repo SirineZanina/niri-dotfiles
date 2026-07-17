@@ -202,7 +202,7 @@ window-rule {
 
 window-rule {
   match app-id="jetbrains-idea"
-  open-fullscreen true
+  open-maximized true
 }
 
 window-rule {
@@ -299,7 +299,7 @@ window-rule {
 
 window-rule {
   match app-id="thunar"
-  opacity 0.9
+  opacity 0.8
 }
 
 // Noctalia v5 settings window
