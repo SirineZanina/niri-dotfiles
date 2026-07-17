@@ -1,2 +1,3 @@
-shell/.config/shell/secrets.sh
+zsh/.config/zsh/secrets.zsh
 zsh/.config/zsh/.zcompdump
+*.zcompdump
