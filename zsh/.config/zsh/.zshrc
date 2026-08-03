@@ -1,214 +1,136 @@
-# ~/.config/zsh/.zshrc — interactive shells only.
-# Env + PATH live in .zshenv; this file is prompt, plugins, aliases, keybinds.
+#   Zsh configuration
+#   Plugins:      fast-syntax-highlighting, zsh-autosuggestions,
+#                 zsh-history-substring-search, zsh-vi-mode
+#   Prompt:       starship
+#   Navigation:   zoxide, fzf, fd
+#   CLI tools:    eza, bat, nvim, ripgrep
+#   Node:         fnm
 
-# ============================================================================
-# ZINIT PLUGIN MANAGER
-# ============================================================================
+# --- History ---
+HISTFILE="$XDG_STATE_HOME/zsh/history"
+HISTSIZE=100000   # entries kept in memory for this session
+SAVEHIST=100000   # entries written to HISTFILE
 
-ZINIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/zinit.git"
+# --- History: what gets recorded ---
+setopt HIST_IGNORE_SPACE      # a leading space keeps a command out of history
+setopt HIST_IGNORE_ALL_DUPS   # a repeated command removes its older copy
+setopt HIST_SAVE_NO_DUPS      # never write duplicates to the file
+setopt HIST_EXPIRE_DUPS_FIRST # when trimming, drop duplicates before uniques
 
-if [[ ! -d "$ZINIT_HOME" ]]; then
-	mkdir -p "$(dirname "$ZINIT_HOME")"
-	git clone https://github.com/zdharma-continuum/zinit.git "$ZINIT_HOME"
-fi
+# --- History: how it's stored and searched ---
+setopt APPEND_HISTORY         # add to the file on exit, don't overwrite it
+setopt SHARE_HISTORY          # live two-way sync between open shells
+setopt HIST_FIND_NO_DUPS      # skip repeats when searching back
 
-source "${ZINIT_HOME}/zinit.zsh"
+# --- Navigation ---
+setopt AUTOCD                 # a bare directory name means cd there
 
-# Use the XDG compdump path from .zshenv; make sure its dir exists.
-autoload -Uz compinit
+# --- Globbing ---
+setopt EXTENDED_GLOB          # enables the #, ^, ~ pattern operators
+setopt GLOBDOTS               # globs match dotfiles without writing the dot
+setopt NO_CASE_GLOB           # globs match regardless of case
+setopt NUMERIC_GLOB_SORT      # sort file9 before file10, not after file1
+
+# --- Interactive behaviour ---
+setopt INTERACTIVE_COMMENTS   # # starts a comment at the prompt too
+setopt AUTO_PARAM_SLASH       # completed directories get a trailing slash
+setopt NOBEEP                 # no terminal bell
+
+stty stop undef               # free ^S for ZLE (default: freeze the terminal)
+stty start undef              # free ^Q for ZLE (default: unfreeze)
+
+
+# =========================================================
+# Completion
+# =========================================================
+
+ZSH_COMPDUMP="$XDG_CACHE_HOME/zsh/zcompdump"
 [[ -d ${ZSH_COMPDUMP:h} ]] || mkdir -p ${ZSH_COMPDUMP:h}
-compinit -C -d "$ZSH_COMPDUMP"
 
-# ============================================================================
-# PLUGINS
-# ============================================================================
+autoload -Uz compinit
+if [[ -n $ZSH_COMPDUMP(N.mh+24) ]]; then
+  compinit -d "$ZSH_COMPDUMP"      # full rescan, once a day
+else
+  compinit -C -d "$ZSH_COMPDUMP"   # trust the cache
+fi
+[[ $ZSH_COMPDUMP.zwc -nt $ZSH_COMPDUMP ]] || zcompile -R -- "$ZSH_COMPDUMP" &!
 
-zinit light zsh-users/zsh-completions
 
-zinit ice wait lucid; zinit light zsh-users/zsh-autosuggestions
-zinit ice wait lucid; zinit light zsh-users/zsh-syntax-highlighting
-zinit ice wait lucid atload"zicdreplay"; zinit light Aloxaf/fzf-tab
+# Initialize zoxide
+eval "$(zoxide init --cmd cd zsh)"
 
-# Oh My Zsh snippets (deferred)
-zinit ice wait lucid; zinit snippet OMZP::git
-zinit ice wait lucid; zinit snippet OMZP::sudo
-zinit ice wait lucid; zinit snippet OMZP::archlinux
-#zinit ice wait lucid; zinit snippet OMZP::aws
-#zinit ice wait lucid; zinit snippet OMZP::kubectl
-#zinit ice wait lucid; zinit snippet OMZP::kubectx
-zinit ice wait lucid; zinit snippet OMZP::command-not-found
+_lscolors="$XDG_CACHE_HOME/zsh/ls_colors.zsh"
+[[ -r $_lscolors ]] || { mkdir -p ${_lscolors:h}; dircolors -b >| $_lscolors }
+source $_lscolors
+unset _lscolors
 
-# ============================================================================
-# HISTORY (interactive sizing; HISTFILE itself is set in .zshenv)
-# ============================================================================
-
-HISTSIZE=1000000
-SAVEHIST=1000000
-
-setopt appendhistory              # Append to history file
-setopt sharehistory               # Share history across sessions
-setopt hist_ignore_space          # Ignore commands starting with space
-setopt hist_ignore_all_dups       # Remove older duplicate entries
-setopt hist_save_no_dups          # Don't save duplicate entries
-setopt hist_ignore_dups           # Ignore consecutive duplicates
-setopt hist_find_no_dups          # Don't show duplicates in search
-setopt inc_append_history         # Add commands immediately
-
-# ============================================================================
-# ZSH OPTIONS
-# ============================================================================
-
-setopt autocd                     # Type directory name to cd
-setopt auto_param_slash           # Add trailing slash to completed dirs
-setopt no_case_glob               # Case insensitive globbing
-setopt no_case_match              # Case insensitive matching
-setopt globdots                   # Include hidden files in glob
-setopt extended_glob              # Extended globbing (~, #, ^)
-setopt interactive_comments       # Allow comments in interactive shell
-
-# Disable Ctrl-S freeze
-stty stop undef
-
-# ============================================================================
-# COMPLETION STYLING
-# ============================================================================
-
+# Enable interactive completion menu selection
 zstyle ':completion:*' menu select
-zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-Z}'
+
+# Make completion case-insensitive
+# Example: "doc" can complete to "Documents"
+zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
 zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
 zstyle ':completion:*' special-dirs true
 zstyle ':completion:*' squeeze-slashes false
 
-# FZF-tab completion preview
-zstyle ':fzf-tab:complete:cd:*' fzf-preview 'ls --color $realpath'
 
-# ============================================================================
-# VI MODE
-# ============================================================================
+# =========================================================
+# Fuzzy finder
+# =========================================================
+if [[ -f /usr/share/fzf/key-bindings.zsh ]]; then
+  source /usr/share/fzf/key-bindings.zsh
+  source /usr/share/fzf/completion.zsh
+fi
 
-bindkey -v
-export KEYTIMEOUT=1
+# =========================================================
+# Bun / FNM / Python VENV / java-use
+# =========================================================
 
-# ============================================================================
-# KEYBINDINGS
-# ============================================================================
-
-# Vi mode history navigation (in normal mode)
-bindkey -M vicmd 'k' up-line-or-history
-bindkey -M vicmd 'j' down-line-or-history
-
-# Ctrl+P/N for history (in insert mode)
-bindkey -M viins '^P' up-line-or-history
-bindkey -M viins '^N' down-line-or-history
-
-# History search
-bindkey '^p' history-search-backward
-bindkey '^n' history-search-forward
-bindkey '^r' fzf-history-widget
-
-# Emacs-style line editing (works in vi insert mode)
-bindkey '^a' beginning-of-line
-bindkey '^e' end-of-line
-bindkey '^k' kill-line
-bindkey '^u' backward-kill-line
-bindkey '^w' backward-kill-word
-
-# ============================================================================
-# ALIASES
-# ============================================================================
-
-[[ -f "$ZDOTDIR/aliases.zsh" ]] && source "$ZDOTDIR/aliases.zsh"
-
-# ============================================================================
-# SHELL INTEGRATIONS
-# ============================================================================
-
-# FZF (fuzzy finder)
-eval "$(fzf --zsh)"
-
-# Zoxide (better cd)
-eval "$(zoxide init --cmd cd zsh)"
-
-# ============================================================================
-# PYTHON VENVS
-# ============================================================================
-
-# usage
-# $ mkvenv myvirtualenv # creates venv under ~/.virtualenvs/
-# $ venv myvirtualenv   # activates venv
-# $ deactivate
-# $ rmvenv myvirtualenv # removes venv
-
-export VENV_HOME="$HOME/.virtualenvs"
-[[ -d "$VENV_HOME" ]] || mkdir -p "$VENV_HOME"
-
-lsvenv() {
-  ls -1 "$VENV_HOME"
-}
-
-venv() {
-  if [[ $# -eq 0 ]]; then
-    echo "Please provide venv name"
-  else
-    source "$VENV_HOME/$1/bin/activate"
-  fi
-}
-
-mkvenv() {
-  if [[ $# -eq 0 ]]; then
-    echo "Please provide venv name"
-  else
-    python3 -m venv "$VENV_HOME/$1"
-  fi
-}
-
-rmvenv() {
-  if [[ $# -eq 0 ]]; then
-    echo "Please provide venv name"
-  else
-    rm -r "$VENV_HOME/$1"
-  fi
-}
-
-# ============================================================================
-# JAVA VERSION SWITCHING
-# ============================================================================
-
-java-use() {
-  local ver="${1:?Usage: java-use <21|25>}"
-  sudo archlinux-java set "java-${ver}-openjdk"
-  export JAVA_HOME="/usr/lib/jvm/java-${ver}-openjdk"
-}
-
-# ============================================================================
-# BUN
-# ============================================================================
-
-# completions (BUN_INSTALL is exported in .zshenv)
 [[ -s "$BUN_INSTALL/_bun" ]] && source "$BUN_INSTALL/_bun"
 
-# ============================================================================
-# FNM (lazy — only initializes on first use)
-# ============================================================================
-
-# Put the default node version's bin on PATH if it exists.
+# fnm, lazily — the real env is only evaluated on first fnm call
 [[ -d "$FNM_DIR/aliases/default/bin" ]] && path=("$FNM_DIR/aliases/default/bin" $path)
-
 fnm() {
   unfunction fnm
   eval "$(command fnm env --use-on-cd --shell zsh)"
   fnm "$@"
 }
 
-# ============================================================================
-# UV
-# ============================================================================
+# --- Python venvs ---
+# mkvenv NAME / venv NAME / deactivate / rmvenv NAME
+export VENV_HOME="$HOME/.virtualenvs"
+[[ -d "$VENV_HOME" ]] || mkdir -p "$VENV_HOME"
 
-eval "$(uv generate-shell-completion zsh)"
-eval "$(uvx --generate-shell-completion zsh)"
+lsvenv() { ls -1 "$VENV_HOME" }
+venv()   { source "$VENV_HOME/${1:?venv name required}/bin/activate" }
+mkvenv() { python3 -m venv "$VENV_HOME/${1:?venv name required}" }
+rmvenv() { rm -rI "$VENV_HOME/${1:?venv name required}" }
 
-# ============================================================================
-# STARSHIP (MUST BE LAST)
-# ============================================================================
 
-eval "$(starship init zsh)"
+# --- Java version switching ---
+# JAVA_HOME points at /usr/lib/jvm/default in .zshenv — the symlink this updates.
+java-use() {
+  local ver="${1:?Usage: java-use <21|25>}"
+  sudo archlinux-java set "java-${ver}-openjdk"
+}
+
+# --- Yazi Setup ---
+function y(){
+  local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
+  yazi "$@" --cwd-file="$tmp"
+  if cwd="$(command cat -- "$tmp")" && [ -n "$cwd" ] && [ "$cwd" != "$PWD" ]; then
+    builtin cd -- "$cwd"
+  fi
+  rm -f -- "$tmp"
+}
+# =========================================================
+# Modular Config Files
+# =========================================================
+
+source "$ZDOTDIR/aliases.zsh"
+source "$ZDOTDIR/fzf.zsh"        # FZF_* vars only
+source "$ZDOTDIR/plugins.zsh"    # zvm inits here, during sourcing
+
+source "$ZDOTDIR/bindings.zsh"   # plain bindkeys, no hook
+source "$ZDOTDIR/prompt.zsh"
