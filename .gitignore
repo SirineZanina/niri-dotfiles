@@ -1,3 +1,5 @@
 zsh/.config/zsh/secrets.zsh
 zsh/.config/zsh/.zcompdump
 *.zcompdump
+
+zsh/.config/zsh/plugins/
