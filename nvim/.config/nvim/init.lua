@@ -16,8 +16,8 @@ local function set_transparent() -- set UI component to transparent
 		"NormalFloat",
 		"FloatBorder",
 		"SignColumn",
-		"StatusLine",
-		"StatusLineNC",
+		-- "StatusLine",
+		-- "StatusLineNC",
 		"TabLine",
 		"TabLineFill",
 		"TabLineSel",
@@ -63,8 +63,6 @@ vim.opt.showmode = false -- do not show the mode, instead have it in statusline
 vim.opt.pumheight = 10 -- popup menu height
 vim.opt.pumblend = 10 -- popup menu transparency
 vim.opt.winblend = 0 -- floating window transparency
-vim.opt.conceallevel = 2 -- obsidian requirement
-vim.opt.concealcursor = "" -- do not hide cursorline in markup
 vim.opt.synmaxcol = 300 -- syntax highlighting limit
 vim.opt.fillchars = { eob = " " } -- hide "~" on empty lines
 
@@ -94,7 +92,6 @@ vim.opt.iskeyword:append("-") -- include - in words
 vim.opt.selection = "inclusive" -- include last char in selection
 vim.opt.mouse = "a" -- enable mouse support
 vim.opt.clipboard:append("unnamedplus") -- use system clipboard
-vim.opt.modifiable = true -- allow buffer modifications
 
 vim.opt.guicursor =
 	"n-v-c:block,i-ci-ve:block,r-cr:hor20,o:hor50,a:blinkwait700-blinkoff400-blinkon250-Cursor/lCursor,sm:block-blinkwait175-blinkoff150-blinkon175" -- cursor blinking and settings
@@ -116,151 +113,151 @@ vim.opt.maxmempattern = 20000 -- increase max memory
 -- =======================================================================
 -- STATUSLINE
 -- =======================================================================
-
--- Git branch function with caching and Nerd Font icon
-local cached_branch = ""
-local last_check = 0
-local function git_branch()
-	local now = vim.uv.now()
-	if now - last_check > 5000 then -- Check every 5 seconds
-		cached_branch = vim.fn.system("git branch --show-current 2>/dev/null | tr -d '\n'")
-		last_check = now
-	end
-	if cached_branch ~= "" then
-		return " \u{e725} " .. cached_branch .. " " -- nf-dev-git_branch
-	end
-	return ""
-end
-
--- File type with Nerd Font icon
-local function file_type()
-	local ft = vim.bo.filetype
-	local icons = {
-		lua = "\u{e620} ", -- nf-dev-lua
-		python = "\u{e73c} ", -- nf-dev-python
-		javascript = "\u{e74e} ", -- nf-dev-javascript
-		typescript = "\u{e628} ", -- nf-dev-typescript
-		javascriptreact = "\u{e7ba} ",
-		typescriptreact = "\u{e7ba} ",
-		html = "\u{e736} ", -- nf-dev-html5
-		css = "\u{e749} ", -- nf-dev-css3
-		scss = "\u{e749} ",
-		json = "\u{e60b} ", -- nf-dev-json
-		markdown = "\u{e73e} ", -- nf-dev-markdown
-		vim = "\u{e62b} ", -- nf-dev-vim
-		sh = "\u{f489} ", -- nf-oct-terminal
-		bash = "\u{f489} ",
-		zsh = "\u{f489} ",
-		rust = "\u{e7a8} ", -- nf-dev-rust
-		go = "\u{e724} ", -- nf-dev-go
-		c = "\u{e61e} ", -- nf-dev-c
-		cpp = "\u{e61d} ", -- nf-dev-cplusplus
-		java = "\u{e738} ", -- nf-dev-java
-		php = "\u{e73d} ", -- nf-dev-php
-		ruby = "\u{e739} ", -- nf-dev-ruby
-		swift = "\u{e755} ", -- nf-dev-swift
-		kotlin = "\u{e634} ",
-		dart = "\u{e798} ",
-		elixir = "\u{e62d} ",
-		haskell = "\u{e777} ",
-		sql = "\u{e706} ",
-		yaml = "\u{f481} ",
-		toml = "\u{e615} ",
-		xml = "\u{f05c} ",
-		dockerfile = "\u{f308} ", -- nf-linux-docker
-		gitcommit = "\u{f418} ", -- nf-oct-git_commit
-		gitconfig = "\u{f1d3} ", -- nf-fa-git
-		vue = "\u{fd42} ", -- nf-md-vuejs
-		svelte = "\u{e697} ",
-		astro = "\u{e628} ",
-	}
-
-	if ft == "" then
-		return " \u{f15b} " -- nf-fa-file_o
-	end
-
-	return ((icons[ft] or " \u{f15b} ") .. ft)
-end
-
--- File size with Nerd Font icon
-local function file_size()
-	local size = vim.fn.getfsize(vim.fn.expand("%"))
-	if size < 0 then
-		return ""
-	end
-	local size_str
-	if size < 1024 then
-		size_str = size .. "B"
-	elseif size < 1024 * 1024 then
-		size_str = string.format("%.1fK", size / 1024)
-	else
-		size_str = string.format("%.1fM", size / 1024 / 1024)
-	end
-	return " \u{f016} " .. size_str .. " " -- nf-fa-file_o
-end
-
--- Mode indicators with Nerd Font icons
-local function mode_icon()
-	local mode = vim.fn.mode()
-	local modes = {
-		n = " \u{f121}  NORMAL",
-		i = " \u{f11c}  INSERT",
-		v = " \u{f0168} VISUAL",
-		V = " \u{f0168} V-LINE",
-		["\22"] = " \u{f0168} V-BLOCK",
-		c = " \u{f120} COMMAND",
-		s = " \u{f0c5} SELECT",
-		S = " \u{f0c5} S-LINE",
-		["\19"] = " \u{f0c5} S-BLOCK",
-		R = " \u{f044} REPLACE",
-		r = " \u{f044} REPLACE",
-		["!"] = " \u{f489} SHELL",
-		t = " \u{f120} TERMINAL",
-	}
-	return modes[mode] or (" \u{f059} " .. mode)
-end
-
-_G.mode_icon = mode_icon
-_G.git_branch = git_branch
-_G.file_type = file_type
-_G.file_size = file_size
-
--- Statusline: solid light bar with dark text (distinct from transparent bg)
-local statusline_bg = "#bac2de" -- subtext1 — soft off-white, less harsh than pure white
-local statusline_fg = "#1e1e2e" -- base — dark text for contrast
-vim.api.nvim_set_hl(0, "StatusLine", { fg = statusline_fg, bg = statusline_bg })
-vim.api.nvim_set_hl(0, "StatusLineBold", { fg = statusline_fg, bg = statusline_bg, bold = true })
-
--- Function to change statusline based on window focus
-local function setup_dynamic_statusline()
-	vim.api.nvim_create_autocmd({ "WinEnter", "BufEnter" }, {
-		callback = function()
-			vim.opt_local.statusline = table.concat({
-				"  ",
-				"%#StatusLineBold#",
-				"%{v:lua.mode_icon()}",
-				"%#StatusLine#",
-				" \u{e0b1} %f %h%m%r", -- nf-pl-left_hard_divider
-				"%{v:lua.git_branch()}",
-				"\u{e0b1} ", -- nf-pl-left_hard_divider
-				"%{v:lua.file_type()}",
-				"\u{e0b1} ", -- nf-pl-left_hard_divider
-				"%{v:lua.file_size()}",
-				"%=", -- Right-align everything after this
-				" \u{f017} %l:%c  %P ", -- nf-fa-clock_o for line/col
-			})
-		end,
-	})
-	vim.api.nvim_set_hl(0, "StatusLineBold", { fg = statusline_fg, bg = statusline_bg, bold = true })
-
-	vim.api.nvim_create_autocmd({ "WinLeave", "BufLeave" }, {
-		callback = function()
-			vim.opt_local.statusline = "  %f %h%m%r \u{e0b1} %{v:lua.file_type()} %=  %l:%c   %P "
-		end,
-	})
-end
-
-setup_dynamic_statusline()
+--
+-- -- Git branch function with caching and Nerd Font icon
+-- local cached_branch = ""
+-- local last_check = 0
+-- local function git_branch()
+-- 	local now = vim.uv.now()
+-- 	if now - last_check > 5000 then -- Check every 5 seconds
+-- 		cached_branch = vim.fn.system("git branch --show-current 2>/dev/null | tr -d '\n'")
+-- 		last_check = now
+-- 	end
+-- 	if cached_branch ~= "" then
+-- 		return " \u{e725} " .. cached_branch .. " " -- nf-dev-git_branch
+-- 	end
+-- 	return ""
+-- end
+--
+-- -- File type with Nerd Font icon
+-- local function file_type()
+-- 	local ft = vim.bo.filetype
+-- 	local icons = {
+-- 		lua = "\u{e620} ", -- nf-dev-lua
+-- 		python = "\u{e73c} ", -- nf-dev-python
+-- 		javascript = "\u{e74e} ", -- nf-dev-javascript
+-- 		typescript = "\u{e628} ", -- nf-dev-typescript
+-- 		javascriptreact = "\u{e7ba} ",
+-- 		typescriptreact = "\u{e7ba} ",
+-- 		html = "\u{e736} ", -- nf-dev-html5
+-- 		css = "\u{e749} ", -- nf-dev-css3
+-- 		scss = "\u{e749} ",
+-- 		json = "\u{e60b} ", -- nf-dev-json
+-- 		markdown = "\u{e73e} ", -- nf-dev-markdown
+-- 		vim = "\u{e62b} ", -- nf-dev-vim
+-- 		sh = "\u{f489} ", -- nf-oct-terminal
+-- 		bash = "\u{f489} ",
+-- 		zsh = "\u{f489} ",
+-- 		rust = "\u{e7a8} ", -- nf-dev-rust
+-- 		go = "\u{e724} ", -- nf-dev-go
+-- 		c = "\u{e61e} ", -- nf-dev-c
+-- 		cpp = "\u{e61d} ", -- nf-dev-cplusplus
+-- 		java = "\u{e738} ", -- nf-dev-java
+-- 		php = "\u{e73d} ", -- nf-dev-php
+-- 		ruby = "\u{e739} ", -- nf-dev-ruby
+-- 		swift = "\u{e755} ", -- nf-dev-swift
+-- 		kotlin = "\u{e634} ",
+-- 		dart = "\u{e798} ",
+-- 		elixir = "\u{e62d} ",
+-- 		haskell = "\u{e777} ",
+-- 		sql = "\u{e706} ",
+-- 		yaml = "\u{f481} ",
+-- 		toml = "\u{e615} ",
+-- 		xml = "\u{f05c} ",
+-- 		dockerfile = "\u{f308} ", -- nf-linux-docker
+-- 		gitcommit = "\u{f418} ", -- nf-oct-git_commit
+-- 		gitconfig = "\u{f1d3} ", -- nf-fa-git
+-- 		vue = "\u{fd42} ", -- nf-md-vuejs
+-- 		svelte = "\u{e697} ",
+-- 		astro = "\u{e628} ",
+-- 	}
+--
+-- 	if ft == "" then
+-- 		return " \u{f15b} " -- nf-fa-file_o
+-- 	end
+--
+-- 	return ((icons[ft] or " \u{f15b} ") .. ft)
+-- end
+--
+-- -- File size with Nerd Font icon
+-- local function file_size()
+-- 	local size = vim.fn.getfsize(vim.fn.expand("%"))
+-- 	if size < 0 then
+-- 		return ""
+-- 	end
+-- 	local size_str
+-- 	if size < 1024 then
+-- 		size_str = size .. "B"
+-- 	elseif size < 1024 * 1024 then
+-- 		size_str = string.format("%.1fK", size / 1024)
+-- 	else
+-- 		size_str = string.format("%.1fM", size / 1024 / 1024)
+-- 	end
+-- 	return " \u{f016} " .. size_str .. " " -- nf-fa-file_o
+-- end
+--
+-- -- Mode indicators with Nerd Font icons
+-- local function mode_icon()
+-- 	local mode = vim.fn.mode()
+-- 	local modes = {
+-- 		n = " \u{f121}  NORMAL",
+-- 		i = " \u{f11c}  INSERT",
+-- 		v = " \u{f0168} VISUAL",
+-- 		V = " \u{f0168} V-LINE",
+-- 		["\22"] = " \u{f0168} V-BLOCK",
+-- 		c = " \u{f120} COMMAND",
+-- 		s = " \u{f0c5} SELECT",
+-- 		S = " \u{f0c5} S-LINE",
+-- 		["\19"] = " \u{f0c5} S-BLOCK",
+-- 		R = " \u{f044} REPLACE",
+-- 		r = " \u{f044} REPLACE",
+-- 		["!"] = " \u{f489} SHELL",
+-- 		t = " \u{f120} TERMINAL",
+-- 	}
+-- 	return modes[mode] or (" \u{f059} " .. mode)
+-- end
+--
+-- _G.mode_icon = mode_icon
+-- _G.git_branch = git_branch
+-- _G.file_type = file_type
+-- _G.file_size = file_size
+--
+-- -- Statusline: solid light bar with dark text (distinct from transparent bg)
+-- local statusline_bg = "#bac2de" -- subtext1 — soft off-white, less harsh than pure white
+-- local statusline_fg = "#1e1e2e" -- base — dark text for contrast
+-- vim.api.nvim_set_hl(0, "StatusLine", { fg = statusline_fg, bg = statusline_bg })
+-- vim.api.nvim_set_hl(0, "StatusLineBold", { fg = statusline_fg, bg = statusline_bg, bold = true })
+--
+-- -- Function to change statusline based on window focus
+-- local function setup_dynamic_statusline()
+-- 	vim.api.nvim_create_autocmd({ "WinEnter", "BufEnter" }, {
+-- 		callback = function()
+-- 			vim.opt_local.statusline = table.concat({
+-- 				"  ",
+-- 				"%#StatusLineBold#",
+-- 				"%{v:lua.mode_icon()}",
+-- 				"%#StatusLine#",
+-- 				" \u{e0b1} %f %h%m%r", -- nf-pl-left_hard_divider
+-- 				"%{v:lua.git_branch()}",
+-- 				"\u{e0b1} ", -- nf-pl-left_hard_divider
+-- 				"%{v:lua.file_type()}",
+-- 				"\u{e0b1} ", -- nf-pl-left_hard_divider
+-- 				"%{v:lua.file_size()}",
+-- 				"%=", -- Right-align everything after this
+-- 				" \u{f017} %l:%c  %P ", -- nf-fa-clock_o for line/col
+-- 			})
+-- 		end,
+-- 	})
+-- 	vim.api.nvim_set_hl(0, "StatusLineBold", { fg = statusline_fg, bg = statusline_bg, bold = true })
+--
+-- 	vim.api.nvim_create_autocmd({ "WinLeave", "BufLeave" }, {
+-- 		callback = function()
+-- 			vim.opt_local.statusline = "  %f %h%m%r \u{e0b1} %{v:lua.file_type()} %=  %l:%c   %P "
+-- 		end,
+-- 	})
+-- end
+--
+-- setup_dynamic_statusline()
 
 -- ============================================================================
 -- KEYMAPS
@@ -276,7 +273,7 @@ vim.keymap.set("n", "k", function()
 	return vim.v.count == 0 and "gk" or "k"
 end, { expr = true, silent = true, desc = "Up (wrap-aware)" })
 
-vim.keymap.set("n", "<leader>c", ":nohlsearch<CR>", { desc = "Clear search highlights" })
+vim.keymap.set("n", "<Esc>", "<cmd>nohlsearch<CR>", { desc = "Clear search highlights" })
 
 vim.keymap.set("n", "n", "nzzzv", { desc = "Next search result (centered)" })
 vim.keymap.set("n", "N", "Nzzzv", { desc = "Previous search result (centered)" })
@@ -301,10 +298,10 @@ vim.keymap.set("n", "<C-Down>", ":resize -2<CR>", { desc = "Decrease window heig
 vim.keymap.set("n", "<C-Left>", ":vertical resize -2<CR>", { desc = "Decrease window width" })
 vim.keymap.set("n", "<C-Right>", ":vertical resize +2<CR>", { desc = "Increase window width" })
 
-vim.keymap.set("n", "<A-j>", ":m .+1<CR>==", { desc = "Move line down" })
-vim.keymap.set("n", "<A-k>", ":m .-2<CR>==", { desc = "Move line up" })
-vim.keymap.set("v", "<A-j>", ":m '>+1<CR>gv=gv", { desc = "Move selection down" })
-vim.keymap.set("v", "<A-k>", ":m '<-2<CR>gv=gv", { desc = "Move selection up" })
+-- vim.keymap.set("n", "<A-j>", ":m .+1<CR>==", { desc = "Move line down" })
+-- vim.keymap.set("n", "<A-k>", ":m .-2<CR>==", { desc = "Move line up" })
+-- vim.keymap.set("v", "<A-j>", ":m '>+1<CR>gv=gv", { desc = "Move selection down" })
+-- vim.keymap.set("v", "<A-k>", ":m '<-2<CR>gv=gv", { desc = "Move selection up" })
 
 vim.keymap.set("v", "<", "<gv", { desc = "Indent left and reselect" })
 vim.keymap.set("v", ">", ">gv", { desc = "Indent right and reselect" })
@@ -422,6 +419,7 @@ vim.api.nvim_create_autocmd("FileType", {
 		vim.opt_local.wrap = true
 		vim.opt_local.linebreak = true
 		vim.opt_local.spell = true
+		vim.opt_local.conceallevel = 0
 	end,
 })
 
@@ -432,6 +430,7 @@ vim.pack.add({
 	"https://www.github.com/echasnovski/mini.nvim",
 	"https://www.github.com/ibhagwan/fzf-lua",
 	"https://www.github.com/nvim-tree/nvim-tree.lua",
+	"https://github.com/nvim-lualine/lualine.nvim",
 	{
 		src = "https://github.com/nvim-treesitter/nvim-treesitter",
 		branch = "main",
@@ -452,6 +451,13 @@ vim.pack.add({
 
 	-- wakatime
 	"https://github.com/wakatime/vim-wakatime",
+	"https://github.com/folke/which-key.nvim",
+	"https://github.com/rafamadriz/friendly-snippets",
+	"https://github.com/WhoIsSethDaniel/mason-tool-installer.nvim",
+
+	-- image preview
+	"https://github.com/folke/snacks.nvim",
+	"https://github.com/HakonHarnes/img-clip.nvim",
 })
 
 -- ============================================================================
@@ -475,6 +481,7 @@ local setup_treesitter = function()
 		"json",
 		"lua",
 		"markdown",
+		"markdown_inline",
 		"python",
 		"typescript",
 		"tsx",
@@ -518,9 +525,10 @@ setup_treesitter()
 local function get_notes_path()
 	local os_release = vim.fn.system("cat /etc/os-release")
 	if os_release:match("Arch") then
-		return vim.fn.expand("~/Documents/ObsidianVault/MyVault")
+		return vim.fn.expand("~/Documents/MyVault")
 	else
-		error("Unsupported OS: no notes path configured")
+		vim.notify("Unsupported OS: falling back to default notes path", vim.log.levels.WARN)
+		return vim.fn.expand("~/Documents/MyVault")
 	end
 end
 
@@ -529,8 +537,21 @@ local function setup_obsidian()
 		legacy_commands = false,
 		workspaces = { { name = "Notes", path = get_notes_path() } },
 		picker = { name = "fzf-lua" },
+		link = { style = "wiki" },
+		frontmatter = { enabled = false },
+		templates = {
+			folder = "5 - Templates",
+			date_format = "%Y-%m-%d",
+			time_format = "%H:%M",
+		},
+
+		attachments = {
+			folder = "Images",
+			confirm_img_paste = true,
+		},
 	})
 
+	vim.keymap.set("n", "<leader>ni", "<cmd>Obsidian paste_img<cr>", { desc = "Paste image into note" })
 	vim.keymap.set("n", "<leader>nn", function()
 		vim.cmd("Obsidian workspace")
 		vim.defer_fn(function()
@@ -543,7 +564,10 @@ local function setup_obsidian()
 	vim.keymap.set("n", "<leader>nw", "<cmd>Obsidian workspace<cr>", { desc = "Switch workspace" })
 end
 
-setup_obsidian()
+local obsidian_ok, obsidian_err = pcall(setup_obsidian)
+if not obsidian_ok then
+	vim.notify("Obsidian disabled: " .. tostring(obsidian_err), vim.log.levels.WARN)
+end
 
 require("nvim-tree").setup({
 	view = {
@@ -635,11 +659,177 @@ vim.keymap.set("n", "<leader>hb", function()
 	require("mini.git").show_at_cursor()
 end, { desc = "Git blame/show" })
 
+-- ============================================================================
+-- STATUSLINE (lualine)
+-- ============================================================================
+
+-- lualine's diff component defaults to gitsigns; feed it mini.diff instead
+local function minidiff_source()
+	local summary = vim.b.minidiff_summary
+	if not summary then
+		return nil
+	end
+	return {
+		added = summary.add,
+		modified = summary.change,
+		removed = summary.delete,
+	}
+end
+
+require("lualine").setup({
+	options = {
+		theme = "catppuccin",
+		globalstatus = true,
+		component_separators = { left = "\u{e0b1}", right = "\u{e0b3}" },
+		section_separators = { left = "\u{e0b0}", right = "\u{e0b2}" },
+	},
+	sections = {
+		lualine_a = {
+			{
+				"mode",
+				fmt = function(str)
+					local icons = {
+						NORMAL = "\u{f121}",
+						INSERT = "\u{f11c}",
+						VISUAL = "\u{f0168}",
+						["V-LINE"] = "\u{f0168}",
+						["V-BLOCK"] = "\u{f0168}",
+						SELECT = "\u{f0c5}",
+						COMMAND = "\u{f120}",
+						REPLACE = "\u{f044}",
+						TERMINAL = "\u{f120}",
+					}
+					return (icons[str] or "\u{f059}") .. "  " .. str
+				end,
+			},
+		},
+		lualine_b = {
+			"branch",
+			{ "diff", source = minidiff_source },
+			{
+				"diagnostics",
+				sources = { "nvim_diagnostic" },
+				symbols = {
+					error = "\u{f057} ",
+					warn = "\u{f071} ",
+					info = "\u{f05a} ",
+					hint = "\u{ea61} ",
+				},
+			},
+		},
+		lualine_c = {
+			{
+				"filename",
+				path = 3,
+				shorting_target = 40,
+				symbols = { modified = "[+]", readonly = "[-]", unnamed = "[No Name]" },
+			},
+		},
+		lualine_x = { "filesize", "filetype" },
+		lualine_y = { "progress" },
+		lualine_z = { "location" },
+	},
+	inactive_sections = {
+		lualine_a = {},
+		lualine_b = {},
+		lualine_c = { { "filename", path = 1 } },
+		lualine_x = { "location" },
+		lualine_y = {},
+		lualine_z = {},
+	},
+	extensions = { "nvim-tree", "fzf", "mason", "quickfix" },
+})
+
 require("mason").setup({})
+
+require("mason-tool-installer").setup({
+	ensure_installed = {
+		"bash-language-server",
+		"black",
+		"clang-format",
+		"clangd",
+		"cpplint",
+		"csharpier",
+		"css-lsp",
+		"efm",
+		"emmet-language-server",
+		"eslint_d",
+		"fixjson",
+		"flake8",
+		"gofumpt",
+		"google-java-format",
+		"gopls",
+		"html-lsp",
+		"jdtls",
+		"lua-language-server",
+		"luacheck",
+		"omnisharp",
+		"prettierd",
+		"pyright",
+		"revive",
+		"shellcheck",
+		"shfmt",
+		"stylua",
+		"typescript-language-server",
+	},
+})
+
+require("which-key").setup({})
+
+require("snacks").setup({
+	image = {
+		enabled = true,
+		doc = {
+			inline = true,
+			max_width = 60,
+			max_height = 30,
+		},
+		img_dirs = { "Images", "img", "images", "assets", "static", "public", "media", "attachments" },
+		resolve = function(file, src)
+			local ok, api = pcall(require, "obsidian.api")
+			if not ok or not api.path_is_note(file) then
+				return
+			end
+			local fn = api.resolve_attachment_path or api.resolve_image_path
+			return fn and fn(src) or nil
+		end,
+	},
+})
+
+local vault = vim.fn.expand("~/Documents/ObsidianVault/MyVault")
+
+require("img-clip").setup({
+	default = {
+		dir_path = "assets",
+		file_name = "%Y-%m-%d-%H-%M-%S",
+		prompt_for_file_name = false,
+	},
+	dirs = {
+		[vault] = {
+			dir_path = vault .. "/Images",
+			file_name = "Pasted image %Y%m%d%H%M%S",
+			extension = "webp",
+			process_cmd = "magick - -quality 75 webp:-",
+			formats = { "jpeg", "jpg", "png", "webp" },
+			filetypes = {
+				markdown = {
+					url_encode_path = false,
+					template = "![[$FILE_NAME]]",
+				},
+			},
+		},
+	},
+})
+
+vim.keymap.set("n", "<leader>ip", "<cmd>PasteImage<cr>", { desc = "Paste image from clipboard" })
+vim.keymap.set("n", "<leader>ih", function()
+	require("snacks.image").hover()
+end, { desc = "Show image at cursor" })
 
 -- ============================================================================
 -- LSP, Linting, Formatting & Completion
 -- ============================================================================
+
 local diagnostic_signs = {
 	Error = "\u{f057} ",
 	Warn = "\u{f071} ",
@@ -753,7 +943,6 @@ vim.api.nvim_create_autocmd("LspAttach", { group = augroup, callback = lsp_on_at
 vim.keymap.set("n", "<leader>q", function()
 	vim.diagnostic.setloclist({ open = true })
 end, { desc = "Open diagnostic list" })
-vim.keymap.set("n", "<leader>dl", vim.diagnostic.open_float, { desc = "Show line diagnostics" })
 
 require("blink.cmp").setup({
 	keymap = {
@@ -774,11 +963,7 @@ require("blink.cmp").setup({
 		},
 	},
 	sources = { default = { "lsp", "path", "buffer", "snippets" } },
-	snippets = {
-		expand = function(snippet)
-			require("luasnip").lsp_expand(snippet)
-		end,
-	},
+	snippets = { preset = "luasnip" },
 	fuzzy = {
 		implementation = "prefer_rust",
 		prebuilt_binaries = { download = true },
@@ -788,6 +973,64 @@ require("blink.cmp").setup({
 vim.lsp.config["*"] = {
 	capabilities = require("blink.cmp").get_lsp_capabilities(),
 }
+
+-- ============================================================================
+-- SNIPPETS (LuaSnip)
+-- ============================================================================
+local ls = require("luasnip")
+
+ls.setup({
+	history = true, -- let <C-e> jump back into a snippet you left
+	updateevents = "TextChanged,TextChangedI", -- live-update dynamic/function nodes
+	delete_check_events = "TextChanged", -- drop dead snippets so old tabstops don't fire
+	enable_autosnippets = true, -- needed if you later add snippetType = "autosnippet"
+	store_selection_keys = "<Tab>", -- visual mode: <Tab> stashes the selection
+})
+
+-- friendly-snippets (VSCode JSON) -> registered into LuaSnip
+require("luasnip.loaders.from_vscode").lazy_load()
+
+-- your own snippets (Lua) -> registered into LuaSnip
+require("luasnip.loaders.from_lua").lazy_load({
+	paths = vim.fn.stdpath("config") .. "/luasnippets",
+})
+
+-- inherit snippets across related filetypes
+ls.filetype_extend("javascriptreact", { "javascript" })
+ls.filetype_extend("typescriptreact", { "typescript", "javascript" })
+ls.filetype_extend("vue", { "javascript" })
+ls.filetype_extend("svelte", { "javascript" })
+ls.filetype_extend("zsh", { "sh" })
+ls.filetype_extend("bash", { "sh" })
+
+vim.keymap.set({ "i", "s" }, "<C-e>", function()
+	if ls.expand_or_jumpable() then
+		ls.expand_or_jump()
+	end
+end, { silent = true, desc = "Expand snippet / jump forward" })
+
+vim.keymap.set({ "i", "s" }, "<C-b>", function()
+	if ls.jumpable(-1) then
+		ls.jump(-1)
+	end
+end, { silent = true, desc = "Jump backward in snippet" })
+
+vim.keymap.set({ "i", "s" }, "<C-y>", function()
+	if ls.choice_active() then
+		ls.change_choice(1)
+	end
+end, { silent = true, desc = "Cycle snippet choice" })
+
+vim.keymap.set("n", "<leader>Ls", function()
+	require("luasnip.loaders.from_lua").load({
+		paths = vim.fn.stdpath("config") .. "/luasnippets",
+	})
+	vim.notify("Snippets reloaded")
+end, { desc = "Reload snippets" })
+
+vim.keymap.set("n", "<leader>Ll", function()
+	require("luasnip.extras.snippet_list").open()
+end, { desc = "List snippets for this buffer" })
 
 vim.lsp.config("lua_ls", {
 	settings = {
@@ -961,7 +1204,7 @@ local function FloatingTerminal()
 
 	local has_terminal = vim.bo[terminal_state.buf].buftype == "terminal"
 	if not has_terminal then
-		vim.fn.termopen(os.getenv("SHELL"))
+		vim.fn.jobstart(vim.o.shell, { term = true })
 	end
 
 	terminal_state.is_open = true
@@ -981,7 +1224,12 @@ local function FloatingTerminal()
 	})
 end
 
-vim.keymap.set("n", "<leader>t", FloatingTerminal, { noremap = true, silent = true, desc = "Toggle floating terminal" })
+vim.keymap.set(
+	"n",
+	"<leader>tt",
+	FloatingTerminal,
+	{ noremap = true, silent = true, desc = "Toggle floating terminal" }
+)
 vim.keymap.set("t", "<Esc>", "<C-\\><C-n>", { noremap = true, silent = true, desc = "Terminal normal mode" })
 vim.keymap.set("t", "<C-q>", function()
 	if terminal_state.is_open and terminal_state.win and vim.api.nvim_win_is_valid(terminal_state.win) then

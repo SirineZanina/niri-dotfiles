@@ -17,9 +17,25 @@
       "rev": "e872dc195336716b19023b7a4dd9f689352acc8d",
       "src": "https://github.com/creativenull/efmls-configs-nvim"
     },
+    "friendly-snippets": {
+      "rev": "6cd7280adead7f586db6fccbd15d2cac7e2188b9",
+      "src": "https://github.com/rafamadriz/friendly-snippets"
+    },
     "fzf-lua": {
       "rev": "532d463f5c83595192fe740572d8fd6902b2217a",
       "src": "https://www.github.com/ibhagwan/fzf-lua"
+    },
+    "img-clip.nvim": {
+      "rev": "b6ddfb97b5600d99afe3452d707444afda658aca",
+      "src": "https://github.com/HakonHarnes/img-clip.nvim"
+    },
+    "lualine.nvim": {
+      "rev": "221ce6b2d999187044529f49da6554a92f740a96",
+      "src": "https://github.com/nvim-lualine/lualine.nvim"
+    },
+    "mason-tool-installer.nvim": {
+      "rev": "443f1ef8b5e6bf47045cb2217b6f748a223cf7dc",
+      "src": "https://github.com/WhoIsSethDaniel/mason-tool-installer.nvim"
     },
     "mason.nvim": {
       "rev": "2a6940af80375532e5e9e7c1f2fc6319a1b7a69d",
@@ -53,6 +69,10 @@
       "rev": "6e6dd49b98cf3da21c058e945c618c635a6367cc",
       "src": "https://github.com/mrcjkb/rustaceanvim"
     },
+    "snacks.nvim": {
+      "rev": "882c996cf28183f4d63640de0b4c02ec886d01f2",
+      "src": "https://github.com/folke/snacks.nvim"
+    },
     "vim-tmux-navigator": {
       "rev": "e41c431a0c7b7388ae7ba341f01a0d217eb3a432",
       "src": "https://github.com/christoomey/vim-tmux-navigator"
@@ -60,6 +80,10 @@
     "vim-wakatime": {
       "rev": "2a856d0b7863dc34ffc80647cb52fbd1319fe144",
       "src": "https://github.com/wakatime/vim-wakatime"
+    },
+    "which-key.nvim": {
+      "rev": "3aab2147e74890957785941f0c1ad87d0a44c15a",
+      "src": "https://github.com/folke/which-key.nvim"
     }
   }
 }
