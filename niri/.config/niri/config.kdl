@@ -21,7 +21,8 @@ cursor {
 input {
   keyboard {
     xkb {
-      layout "us"
+      layout "us,fr"
+      options "grp:alt_shift_toggle"
     }
 
     repeat-rate 100
@@ -42,7 +43,7 @@ mouse {
   scroll-factor 2.0
 }
 
-  focus-follows-mouse
+  //focus-follows-mouse
 }
 
 output "eDP-1" {
@@ -102,8 +103,8 @@ debug {
 }
 
 blur {
-  passes 5
-  offset 5
+  passes 4 
+  offset 4
   noise 0.02
   saturation 1.5
 }
@@ -121,24 +122,14 @@ xwayland-satellite {
 }
 
 animations {
+  workspace-switch {
+    off
+  }
 }
 
 overview {
   zoom 0.40
-  backdrop-color "#ffffff"
-
-}
-
-window-rule {
-  geometry-corner-radius 2
-  focus-ring {
-    on
-    width 1
-    active-gradient from="#c4a7e7" to="#9ccfd8" angle=45 relative-to="workspace-view"
-    inactive-color "#6e6a86"
-  }
-  clip-to-geometry true
-  // open-maximized true
+  backdrop-color "#1e1e2e"
 }
 
 window-rule {
@@ -152,6 +143,11 @@ window-rule {
   background-effect {
     blur true
   }
+}
+
+window-rule {
+    match app-id="swayimg"
+    open-floating true
 }
 
 window-rule {
@@ -283,11 +279,6 @@ window-rule {
 // Rules preserved from the previous config because they are not represented above.
 
 window-rule {
-    match app-id=r#"^org\.wezfurlong\.wezterm$"#
-    default-column-width {}
-}
-
-window-rule {
     match app-id=r#"firefox$"# title="^Picture-in-Picture$"
     open-floating true
 }
@@ -334,21 +325,17 @@ binds {
     // ── Hotkey Overlay ─────────────────────────────────────────
     Mod+Shift+Slash { show-hotkey-overlay; }
 
-    // ── Apps ───────────────────────────────────────────────────
+    // ── Apps ──────────────────────────────────────────────────
     Mod+Return  hotkey-overlay-title="Terminal: kitty"        { spawn "kitty"; }
     Mod+B       hotkey-overlay-title="Browser: brave"         { spawn "brave"; }
     Mod+E       hotkey-overlay-title="File Manager: thunar"   { spawn "thunar"; }
-    Mod+M       hotkey-overlay-title="Chat: discord"          { spawn "discord"; }
-    Mod+G       hotkey-overlay-title="System Monitor: btop"   { spawn-sh "kitty --single-instance --class btop -e btop"; }
+    Mod+M       hotkey-overlay-title="System Monitor: btop"   { spawn-sh "kitty --single-instance --class btop -e btop"; }
     Mod+X       hotkey-overlay-title="Music: cmus"            { spawn-sh "kitty --single-instance --class cmus -e cmus"; }
-    Mod+Y       hotkey-overlay-title="Network: nmtui"         { spawn-sh "kitty --single-instance --class nmtui -e nmtui"; }
-    Mod+A       hotkey-overlay-title="Bluetooth: bluetui"     { spawn-sh "kitty --single-instance --class bluetui -e bluetui"; }
-    Mod+Z       hotkey-overlay-title="Localsend"              { spawn-sh "pkill localsend || localsend"; }
     Mod+Alt+C   hotkey-overlay-title="Color Picker"           { spawn "hyprpicker" "-a"; }
 
     // ── Noctalia Panels ────────────────────────────────────────
-    Mod+Space   hotkey-overlay-title="App Launcher"           { spawn-sh "~/.config/rofi/launcher/launcher.sh"; }
- // Mod+Space  hotkey-overlay-title="App Launcher"  { spawn "noctalia" "msg" "panel-toggle" "launcher"; }
+    //Mod+Space   hotkey-overlay-title="App Launcher"           { spawn-sh "~/.config/rofi/launcher/launcher.sh"; }
+    Mod+Space  hotkey-overlay-title="App Launcher"  { spawn "noctalia" "msg" "panel-toggle" "launcher"; }
     Mod+W       hotkey-overlay-title="Wallpaper Picker"       { spawn-sh "noctalia msg panel-toggle wallpaper"; }
     Mod+S       hotkey-overlay-title="Noctalia Settings"      { spawn-sh "noctalia msg settings-toggle"; }
     Mod+N       hotkey-overlay-title="Control Center"         { spawn-sh "noctalia msg panel-toggle control-center"; }
@@ -358,25 +345,27 @@ binds {
     Mod+Shift+C hotkey-overlay-title="Clipboard"              { spawn-sh "~/.config/rofi/clipboard/clipboard.sh"; }
     Mod+Delete  hotkey-overlay-title="Wipe Clipboard"         { spawn-sh "cliphist wipe"; }
 
-    // ── Session ────────────────────────────────────────────────
-    Mod+Escape  hotkey-overlay-title="Session Menu"           { spawn "noctalia" "msg" "panel-toggle" "session"; }
-    Mod+F12     hotkey-overlay-title="Lock Screen"            { spawn "hyprlock"; }
-    Alt+O       repeat=false hotkey-overlay-title="Shutdown"  { spawn "noctalia" "msg" "session" "shutdown"; }
-    Alt+R       repeat=false hotkey-overlay-title="Reboot"    { spawn "noctalia" "msg" "session" "reboot"; }
-    Alt+S       repeat=false hotkey-overlay-title="Suspend"   { spawn "noctalia" "msg" "session" "lock-and-suspend"; }
-    Mod+Shift+E hotkey-overlay-title="Logout"                 { spawn "noctalia" "msg" "session" "logout"; }
-    Mod+Shift+P hotkey-overlay-title="Monitors Off"           { power-off-monitors; }
+    // ── Session ──────────────────────────────────────────────────
+    // Only the two safe, frequent, reversible actions get direct keys.
+    // Everything destructive goes through the menu, which requires
+    // a confirmation step before it executes.
+    Mod+Escape  hotkey-overlay-title="Session Menu"  { spawn "noctalia" "msg" "panel-toggle" "session"; }
+    Mod+F1      hotkey-overlay-title="Lock Screen"   { spawn "hyprlock"; }
+    Mod+F2      hotkey-overlay-title="Suspend"       { spawn "noctalia" "msg" "session" "lock-and-suspend"; }
+    Mod+F6      hotkey-overlay-title="Monitors Off"  { power-off-monitors; }
 
     // ── Screenshots ────────────────────────────────────────────
     Print       repeat=false hotkey-overlay-title="Screenshot: Full"   { spawn "noctalia" "msg" "screenshot-fullscreen"; }
-    Alt+Print   repeat=false hotkey-overlay-title="Screenshot: Region" { spawn "noctalia" "msg" "screenshot-region"; }
+    Mod+Print   repeat=false hotkey-overlay-title="Screenshot: Region" { spawn "noctalia" "msg" "screenshot-region"; }
     Mod+Shift+S repeat=false hotkey-overlay-title="Screenshot: Region + Edit" { spawn-sh "grim -t ppm -g \"$(slurp -o -d -c '#eb6f92ff' -b '#191724aa')\" - | satty -f - --copy-command wl-copy --early-exit --output-filename \"$(xdg-user-dir PICTURES)/Screenshots/Screenshot_$(date '+%Y-%m-%d_%H-%M-%S').png\""; }
 
+    // ── Monitor Cycling ────────────────────────────────────────
+    Mod+D       hotkey-overlay-title="Focus Next Monitor"     { focus-monitor-next; }
+    Mod+Shift+D  hotkey-overlay-title="Move Window to Next Monitor" { move-column-to-monitor-next; }
 
     // ── Window Management ──────────────────────────────────────
     Mod+Q repeat=false { close-window; }
     Mod+V              { toggle-window-floating; }
-    Mod+Shift+V        { switch-focus-between-floating-and-tiling; }
     Mod+O repeat=false { toggle-overview; }
     Mod+T              { toggle-column-tabbed-display; }
     Mod+Shift+Escape allow-inhibiting=false { toggle-keyboard-shortcuts-inhibit; }
@@ -386,44 +375,20 @@ binds {
     Mod+J     { focus-window-down; }
     Mod+K     { focus-window-up; }
     Mod+L     { focus-column-right; }
-    Mod+Left  { focus-column-left; }
-    Mod+Down  { focus-window-down; }
-    Mod+Up    { focus-window-up; }
-    Mod+Right { focus-column-right; }
-    Mod+Home  { focus-column-first; }
-    Mod+End   { focus-column-last; }
+    Mod+Comma  { consume-or-expel-window-left; }
+    Mod+Period { consume-or-expel-window-right; }
 
     // ── Move Windows (Ctrl+HJKL) ───────────────────────────────
-    Mod+Ctrl+H     { move-column-left; }
-    Mod+Ctrl+J     { move-window-down; }
-    Mod+Ctrl+K     { move-window-up; }
-    Mod+Ctrl+L     { move-column-right; }
-    Mod+Ctrl+Left  { move-column-left; }
-    Mod+Ctrl+Down  { move-window-down; }
-    Mod+Ctrl+Up    { move-window-up; }
-    Mod+Ctrl+Right { move-column-right; }
-    Mod+Ctrl+Home  { move-column-to-first; }
-    Mod+Ctrl+End   { move-column-to-last; }
-
-    // ── Monitor Focus (Shift+HJKL) ─────────────────────────────
-    Mod+Shift+H     { focus-monitor-left; }
-    Mod+Shift+J     { focus-monitor-down; }
-    Mod+Shift+K     { focus-monitor-up; }
-    Mod+Shift+L     { focus-monitor-right; }
-    Mod+Shift+Left  { focus-monitor-left; }
-    Mod+Shift+Down  { focus-monitor-down; }
-    Mod+Shift+Up    { focus-monitor-up; }
-    Mod+Shift+Right { focus-monitor-right; }
+    Mod+Shift+H     { move-column-left; }
+    Mod+Shift+J     { move-window-down; }
+    Mod+Shift+K     { move-window-up; }
+    Mod+Shift+L     { move-column-right; }
 
     // ── Move to Monitor (Shift+Ctrl+HJKL) ─────────────────────
-    Mod+Shift+Ctrl+H     { move-column-to-monitor-left; }
-    Mod+Shift+Ctrl+J     { move-column-to-monitor-down; }
-    Mod+Shift+Ctrl+K     { move-column-to-monitor-up; }
-    Mod+Shift+Ctrl+L     { move-column-to-monitor-right; }
-    Mod+Shift+Ctrl+Left  { move-column-to-monitor-left; }
-    Mod+Shift+Ctrl+Down  { move-column-to-monitor-down; }
-    Mod+Shift+Ctrl+Up    { move-column-to-monitor-up; }
-    Mod+Shift+Ctrl+Right { move-column-to-monitor-right; }
+    Mod+Ctrl+H     { move-column-to-monitor-left; }
+    Mod+Ctrl+J     { move-column-to-monitor-down; }
+    Mod+Ctrl+K     { move-column-to-monitor-up; }
+    Mod+Ctrl+L     { move-column-to-monitor-right; }
 
     // ── Workspaces ─────────────────────────────────────────────
     Mod+U              { focus-workspace-down; }
@@ -455,15 +420,11 @@ binds {
     Mod+Shift+9 { move-window-to-workspace 9; }
 
     // ── Column / Window Layout ─────────────────────────────────
-    Mod+BracketLeft  { consume-or-expel-window-left; }
-    Mod+BracketRight { consume-or-expel-window-right; }
-    Mod+Comma        { consume-window-into-column; }
-    Mod+Period       { expel-window-from-column; }
+    // Vim-inspired directional column operations.
     Mod+F            { maximize-column; }
-    Mod+Shift+F      { fullscreen-window; }
     Mod+Ctrl+F       { expand-column-to-available-width; }
-    Mod+Shift+R      { switch-preset-column-width; }
-    Mod+Ctrl+Shift+R { switch-preset-window-height; }
+    Mod+R      { switch-preset-column-width; }
+    Mod+Shift+R { switch-preset-window-height; }
     Mod+Ctrl+R       { reset-window-height; }
     Mod+C            { center-column; }
     Mod+Ctrl+C       { center-visible-columns; }
@@ -471,14 +432,10 @@ binds {
     Mod+Equal        { set-column-width "+10%"; }
     Mod+Shift+Minus  { set-window-height "-10%"; }
     Mod+Shift+Equal  { set-window-height "+10%"; }
-    Mod+Alt+H        { set-column-width "-10%"; }
-    Mod+Alt+L        { set-column-width "+10%"; }
-    Mod+Alt+K        { set-window-height "-10%"; }
+    Mod+Alt+H        { set-window-width "-10%"; }
+    Mod+Alt+L        { set-window-width "+10%"; }
     Mod+Alt+J        { set-window-height "+10%"; }
-    Mod+Alt+Ctrl+H   { set-window-width "-10%"; }
-    Mod+Alt+Ctrl+L   { set-window-width "+10%"; }
-    Mod+Alt+Ctrl+K   { set-window-height "-10%"; }
-    Mod+Alt+Ctrl+J   { set-window-height "+10%"; }
+    Mod+Alt+K        { set-window-height "-10%"; }
 
     // ── Scroll ─────────────────────────────────────────────────
     Mod+WheelScrollDown           cooldown-ms=150 { focus-workspace-down; }
