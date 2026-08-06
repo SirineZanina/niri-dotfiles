@@ -110,7 +110,7 @@ blur {
 }
 
 spawn-at-startup "/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1"
-spawn-at-startup "gnome-keyring-daemon" "--start" "--components=secrets"
+// spawn-at-startup "gnome-keyring-daemon" "--start" "--components=secrets"
 spawn-sh-at-startup "wl-paste --type text --watch cliphist store"
 spawn-sh-at-startup "wl-paste --type image --watch cliphist store"
 spawn-at-startup "hypridle"
@@ -331,11 +331,11 @@ binds {
     Mod+E       hotkey-overlay-title="File Manager: thunar"   { spawn "thunar"; }
     Mod+M       hotkey-overlay-title="System Monitor: btop"   { spawn-sh "kitty --single-instance --class btop -e btop"; }
     Mod+X       hotkey-overlay-title="Music: cmus"            { spawn-sh "kitty --single-instance --class cmus -e cmus"; }
-    Mod+Alt+C   hotkey-overlay-title="Color Picker"           { spawn "hyprpicker" "-a"; }
+    Alt+C       hotkey-overlay-title="Color Picker"           { spawn "hyprpicker" "-a"; }
 
     // ── Noctalia Panels ────────────────────────────────────────
     //Mod+Space   hotkey-overlay-title="App Launcher"           { spawn-sh "~/.config/rofi/launcher/launcher.sh"; }
-    Mod+Space  hotkey-overlay-title="App Launcher"  { spawn "noctalia" "msg" "panel-toggle" "launcher"; }
+    Mod+Space   hotkey-overlay-title="App Launcher"  { spawn "noctalia" "msg" "panel-toggle" "launcher"; }
     Mod+W       hotkey-overlay-title="Wallpaper Picker"       { spawn-sh "noctalia msg panel-toggle wallpaper"; }
     Mod+S       hotkey-overlay-title="Noctalia Settings"      { spawn-sh "noctalia msg settings-toggle"; }
     Mod+N       hotkey-overlay-title="Control Center"         { spawn-sh "noctalia msg panel-toggle control-center"; }
@@ -360,7 +360,7 @@ binds {
     Mod+Shift+S repeat=false hotkey-overlay-title="Screenshot: Region + Edit" { spawn-sh "grim -t ppm -g \"$(slurp -o -d -c '#eb6f92ff' -b '#191724aa')\" - | satty -f - --copy-command wl-copy --early-exit --output-filename \"$(xdg-user-dir PICTURES)/Screenshots/Screenshot_$(date '+%Y-%m-%d_%H-%M-%S').png\""; }
 
     // ── Monitor Cycling ────────────────────────────────────────
-    Mod+D       hotkey-overlay-title="Focus Next Monitor"     { focus-monitor-next; }
+    Mod+D        hotkey-overlay-title="Focus Next Monitor"     { focus-monitor-next; }
     Mod+Shift+D  hotkey-overlay-title="Move Window to Next Monitor" { move-column-to-monitor-next; }
 
     // ── Window Management ──────────────────────────────────────
