@@ -1,0 +1,96 @@
+#!/usr/bin/env bash
+# yazi previewer for EPUB files.
+# Shows the book cover image (fit to the preview pane); falls back to a
+# plain-text excerpt when no cover can be extracted.
+#
+# Called by yazi with: $1=file, $2=preview width, $3=preview height, $4=x, $5=y
+
+file="$1"
+width="${2:-80}"
+height="${3:-50}"
+x="${4:-0}"
+y="${5:-0}"
+
+cache_dir="${XDG_CACHE_HOME:-$HOME/.cache}/yazi/epub"
+mkdir -p "$cache_dir" 2>/dev/null || exit 1
+
+# Extract the cover declared in the OPF manifest (<meta name="cover" ...> ->
+# <item id="..." href="...">). This is the most reliable source.
+extract_cover_opf() {
+	local opf cover_id href dir path
+	opf="$(unzip -Z1 "$file" 2>/dev/null | grep -iE '\.opf$' | head -n1)"
+	[ -n "$opf" ] || return 1
+
+	cover_id="$(unzip -p "$file" "$opf" 2>/dev/null | tr -d '\n' | sed 's/<meta/\n<meta/g' \
+		| grep -iE 'name[[:space:]]*=[[:space:]]*"cover"' \
+		| grep -oiE 'content[[:space:]]*=[[:space:]]*"[^"]*"' | head -n1 \
+		| sed -E 's/^content[[:space:]]*=[[:space:]]*"//; s/"$//')"
+	[ -n "$cover_id" ] || return 1
+
+	href="$(unzip -p "$file" "$opf" 2>/dev/null | tr -d '\n' | sed 's/<item/\n<item/g' \
+		| grep -iE "id[[:space:]]*=[[:space:]]*\"$cover_id\"" \
+		| grep -oiE 'href[[:space:]]*=[[:space:]]*"[^"]*"' | head -n1 \
+		| sed -E 's/^href[[:space:]]*=[[:space:]]*"//; s/"$//')"
+	[ -n "$href" ] || return 1
+
+	# Resolve href relative to the OPF's location in the archive.
+	dir="${opf%/*}"
+	[ "$dir" = "$opf" ] && dir=""
+	path="${dir:+$dir/}$href"
+	path="$(printf '%s' "$path" | sed 's#^\./##; s#/\./#/#g')"
+	while printf '%s' "$path" | grep -qE '(^|/)\.\./'; do
+		path="$(printf '%s' "$path" | sed -E 's#[^/]+/\.\./##; s#^\.\./##')"
+	done
+
+	unzip -p "$file" "$path" > "$cover" 2>/dev/null || return 1
+	file -b --mime-type "$cover" 2>/dev/null | grep -q '^image/' || { rm -f "$cover"; return 1; }
+}
+
+# Heuristic fallback: any entry named cover.* anywhere in the archive.
+extract_cover_guess() {
+	local entry
+	entry="$(unzip -Z1 "$file" 2>/dev/null | grep -iE '(^|/)cover\.(jpe?g|png|gif|webp)$' | head -n1)"
+	[ -n "$entry" ] || return 1
+	unzip -p "$file" "$entry" > "$cover" 2>/dev/null || return 1
+	file -b --mime-type "$cover" 2>/dev/null | grep -q '^image/' || { rm -f "$cover"; return 1; }
+}
+
+# Plain-text excerpt of the book.
+text_preview() {
+	if command -v pandoc >/dev/null 2>&1; then
+		pandoc "$file" -t plain --wrap=none 2>/dev/null | grep -vE '^\s*$' | head -n 150
+	elif command -v ebook-convert >/dev/null 2>&1; then
+		local txt
+		txt="$(mktemp --suffix=.txt)"
+		ebook-convert "$file" "$txt" >/dev/null 2>&1
+		grep -vE '^\s*$' "$txt" | head -n 150
+		rm -f "$txt"
+	fi
+}
+
+# --- main ------------------------------------------------------------------
+# Cache the extracted cover, keyed by path + mtime.
+key="$(printf '%s' "$file" | sha256sum | cut -d' ' -f1)$(stat -c '%Y' "$file" 2>/dev/null)"
+cover="$cache_dir/$key"
+
+if [ ! -s "$cover" ]; then
+	rm -f "$cover"
+	extract_cover_opf || extract_cover_guess
+fi
+
+if [ -s "$cover" ]; then
+	# Fit the cover into the preview area, mirroring yazi's built-in image previewer.
+	read -r iw ih < <(identify -format '%w %h' "$cover" 2>/dev/null)
+	if [ -z "${iw:-}" ] || [ -z "${ih:-}" ] || [ "$iw" -lt 1 ] || [ "$ih" -lt 1 ]; then
+		iw=600
+		ih=900
+	fi
+	read -r ow oh < <(awk -v w="$width" -v h="$height" -v iw="$iw" -v ih="$ih" 'BEGIN {
+		s = (w / iw < h / ih) ? w / iw : h / ih
+		printf "%d %d", iw * s, ih * s
+	}')
+	printf '{"image": "%s", "x": %d, "y": %d, "width": %d, "height": %d}\n' \
+		"$cover" "$x" "$y" "$ow" "$oh"
+else
+	text_preview
+fi

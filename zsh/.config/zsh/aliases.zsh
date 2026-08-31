@@ -2,10 +2,13 @@
 
 
 # --- ls, via eza ---
-alias ls='eza --icons'
-alias ll='eza -lh --icons --git'    # long listing with git status column
-alias la='eza -lah --icons --git'   # same, including dotfiles
-alias tree='eza --tree --icons'
+# NOTE: eza v0.23+ changed --icons to take an optional value (--icons [WHEN]).
+# Use --icons=auto (identical to the old bare --icons) so that the first
+# positional argument is still parsed as a path, e.g. `ls .git/`.
+alias ls='eza --icons=auto'
+alias ll='eza -lh --icons=auto --git'    # long listing with git status column
+alias la='eza -lah --icons=auto --git'   # same, including dotfiles
+alias tree='eza --tree --icons=auto'
 
 # Give eza ls's completions rather than writing a separate _eza.
 compdef eza=ls
@@ -17,6 +20,7 @@ alias grep='grep --color=auto'
 alias diff='diff --color=auto'
 alias df='df -h'                    # sizes in K/M/G instead of raw blocks
 
+alias rm='rm -i'
 
 # --- Navigation ---
 # -- stops zsh parsing the - as a flag; cd - returns to the previous directory.

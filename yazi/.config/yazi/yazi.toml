@@ -134,6 +134,8 @@ preloaders = [
 	{ mime = "video/*", run = "video" },
 	# PDF
 	{ mime = "application/pdf", run = "pdf" },
+	# EPUB
+	{ mime = "application/epub+zip", run = "epub" },
 	# Font
 	{ mime = "font/*", run = "font" },
 	{ mime = "application/ms-opentype", run = "font" },

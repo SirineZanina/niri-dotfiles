@@ -66,6 +66,14 @@ layout {
     proportion 1.0
   }
 
+  // Window heights that "switch-preset-window-height" (Mod+Shift+R) toggles between.
+  preset-window-heights {
+    proportion 0.33333
+    proportion 0.5
+    proportion 0.66667
+    proportion 1.0
+  }
+
   default-column-width { proportion 0.5; }
 
   focus-ring {
@@ -103,8 +111,8 @@ debug {
 }
 
 blur {
-  passes 4 
-  offset 4
+  passes 3
+  offset 3
   noise 0.02
   saturation 1.5
 }
@@ -123,7 +131,6 @@ xwayland-satellite {
 
 animations {
   workspace-switch {
-    off
   }
 }
 
@@ -308,6 +315,12 @@ window-rule {
     }
 }
 
+window-rule {
+    match app-id="Windscribe"
+    open-floating true
+    default-floating-position x=100 y=100 relative-to="top-left"
+}
+
 // Noctalia v5 layer rules
 layer-rule {
     match namespace="^noctalia-(bar-[^\"]+|notification|dock|panel)$"
@@ -422,6 +435,7 @@ binds {
     // ── Column / Window Layout ─────────────────────────────────
     // Vim-inspired directional column operations.
     Mod+F            { maximize-column; }
+    Mod+Shift+F      { fullscreen-window; }
     Mod+Ctrl+F       { expand-column-to-available-width; }
     Mod+R      { switch-preset-column-width; }
     Mod+Shift+R { switch-preset-window-height; }

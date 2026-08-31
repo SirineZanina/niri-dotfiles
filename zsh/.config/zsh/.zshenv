@@ -64,7 +64,7 @@ export WGETRC="$XDG_CONFIG_HOME/wget/wgetrc"
 export SSH_AUTH_SOCK="${XDG_RUNTIME_DIR:-/run/user/$(id -u)}/ssh-agent.socket"
 
 # --- Java quirks ---
-export JDK_JAVA_OPTIONS="-Djava.util.prefs.userRoot=$XDG_CONFIG_HOME/java"  # prefs out of $HOME
+# export JDK_JAVA_OPTIONS="-Djava.util.prefs.userRoot=$XDG_CONFIG_HOME/java"  # prefs out of $HOME
 export _JAVA_AWT_WM_NONREPARENTING=1                                        # fixes GUI apps under tiling WMs
 
 # --- Misc ---

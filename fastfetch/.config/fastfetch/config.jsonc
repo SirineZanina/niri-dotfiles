@@ -1,90 +1,108 @@
 {
   "$schema": "https://github.com/fastfetch-cli/fastfetch/raw/master/doc/json_schema.json",
   "display": {
-    "separator": " "
+    "key": {
+      "width": 10,
+    },
+    "size": {
+      "binaryPrefix": "jedec",
+    },
+    "separator": "",
   },
   "logo": {
     "type": "auto",
-    "source": "~/.config/fastfetch/logo/logo.png",
+    "source": "~/.config/fastfetch/logo/kitten_asci",
     "width": 20,
     "height": 14,
     "padding": {
       "top": 0,
-      "left": 1
-    }
+      "left": 1,
+    },
   },
   "modules": [
     "break",
-    "break",
     {
-      "type": "custom",
-      "key": "╭── ⋅ ⋅  ⋅ ⋅ ──╮"
-    },
-    {
-      "type": "title",
-      "key": "│{#31}   user       {#keys}│",
-      "format": "{user-name}"
+      "type": "host",
+      "key": "ho",
+      "keyColor": "#CBA6F7",
+      "format": "{name}",
     },
     {
       "type": "os",
-      "key": "│{#32}   distro     {#keys}│",
-      "format": "{name}"
+      "key": "os",
+      "keyColor": "#94E2D5",
+      "format": "{name}",
     },
     {
-      "type": "shell",
-      "key" : "│{#33}   shell      {#keys}│",
-      "format": "{pretty-name}"
-    },
-    {
-      "type": "terminal",
-      "key": "│{#34}   terminal   {#keys}│",
-      "format": "{exe-name}"
+      "type": "kernel",
+      "key": "ker",
+      "keyColor": "#74C7EC",
     },
     {
       "type": "packages",
-      "key": "│{#35}   packages   {#keys}│"
+      "key": "pkgs",
+      "keyColor": "#F9E2AF",
+    },
+    {
+      "type": "shell",
+      "key": "sh",
+      "keyColor": "#F5C2E7",
+      "format": "{pretty-name}",
+    },
+    {
+      "type": "terminal",
+      "key": "ter",
+      "keyColor": "#94E2D5",
+      "format": "{pretty-name}",
     },
     {
       "type": "terminalfont",
-      "key": "│{#36}   font       {#keys}│"
+      "key": "fn",
+      "keyColor": "#F5C2E7",
     },
     {
-      "type": "custom",
-      "key": "├── ⋅ ⋅  ⋅ ⋅ ──┤"
+      "type": "command",
+      "key": "wm",
+      "keyColor": "#89DCEB",
+      "text": "echo 'Quartz Compositor'",
+      "format": "{1}",
+    },
+    {
+      "type": "uptime",
+      "key": "up",
+      "keyColor": "#FAB387",
     },
     {
       "type": "cpu",
-      "key": "│{#31}   CPU        {#keys}│",
-      "format": "{name}"
-    },
-    {
-      "type": "gpu",
-      "key": "│{#32}   GPU        {#keys}│",
-      "format": "{name}"
+      "key": "cpu",
+      "keyColor": "#CBA6F7",
+      "format": "{name}",
     },
     {
       "type": "memory",
-      "key": "│{#33} 󰍛  memory     {#keys}│"
+      "key": "ram",
+      "keyColor": "#94E2D5",
+      "format": "{used} / {total}",
     },
     {
       "type": "disk",
-      "folders": "/",
-      "key": "│{#34} 󰉉  disk       {#keys}│"
+      "key": "disk",
+      "keyColor": "#74C7EC",
+      "folders": ["/"],
+      "format": "{size-used} / {size-total}",
     },
     {
-      "type": "custom",
-      "key": "╰── ⋅ ⋅  ⋅ ⋅ ──╯"
+      "type": "command",
+      "key": "bat",
+      "keyColor": "#A6E3A1",
+      "text": "pmset -g batt | tail -1 | sed -E 's/.*\\t//; s/; */ /g; s/ present.*//' | while read p s t r; do printf \"\\033[38;2;166;227;161m%s\\033[0m %s %s %s\" \"$p\" \"$s\" \"$t\" \"$r\"; done",
+      "format": "{}",
     },
     "break",
     {
       "type": "custom",
-      "key": "    ⋅ ─   ─ ⋅",
+      "format": "\u001b[38;2;249;226;175m󰮯\u001b[0m \u001b[38;2;203;166;247m󰊠\u001b[0m \u001b[38;2;116;199;236m󰊠\u001b[0m \u001b[38;2;245;194;231m󰊠\u001b[0m \u001b[38;2;250;179;135m󰊠\u001b[0m \u001b[38;2;166;227;161m󰊠\u001b[0m \u001b[38;2;148;226;213m󰊠\u001b[0m \u001b[38;2;180;190;254m󰊠\u001b[0m",
     },
-    {
-      "type": "colors",
-      "paddingLeft": 1,
-      "symbol": "circle"
-    }
-  ]
+    "break",
+  ],
 }
-
